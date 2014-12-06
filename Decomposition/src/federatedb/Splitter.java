@@ -40,7 +40,7 @@ public class Splitter {
 		return sb.toString();
 	}
 	
-	public static void main (String[] args){
+	public static void main2 (String[] args){
 		try {
 			Splitter sp = new Splitter("query.xq");
 			System.out.println(sp);

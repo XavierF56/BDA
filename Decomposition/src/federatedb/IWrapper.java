@@ -3,8 +3,8 @@ import java.util.List;
 
 public abstract class IWrapper {
 	
-	static int QueryCounter;
-	static String DestinationFolder;
+	static int QueryCounter = 0;
+	static String DestinationFolder = "temp/";
 	
 	/**
 	 * Fetch the model of the database.
