@@ -36,9 +36,10 @@ public class WrapperXML extends IWrapper{
 
 	
 	String getModel(String table) {
-		InputStream xml = new FileInputStream(sourceFolder + "/" + tablesMap.get(table));
-		Document document = documentBuilder.parse(xml);
-		String systemId = document.getDoctype().getSystemId();
+		//InputStream xml = new FileInputStream(sourceFolder + "/" + tablesMap.get(table));
+		
+		//Document document = documentBuilder.parse(xml);
+		//String systemId = document.getDoctype().getSystemId();
 		return null;
 	}	
 
