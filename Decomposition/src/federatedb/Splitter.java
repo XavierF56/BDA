@@ -70,8 +70,11 @@ public class Splitter {
 		
 		while (m.find()) {
 			String[] tmp = new String[3];
+			// The full subquery
 			tmp[0] = m.group(0);
+			// The document name
 			tmp[1] = m.group(1);
+			// The XPath query
 			tmp[2] = m.group(2);
 			subqueries.add(tmp);
 		}
