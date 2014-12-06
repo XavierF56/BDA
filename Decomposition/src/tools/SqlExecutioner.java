@@ -38,6 +38,7 @@ public class SqlExecutioner {
 		return "";
 	}
 	
+	/*
 	public static void main(String[] args) {
 		try {
 			// executeQuery("fournisseur", "SELECT name FROM sqlite_master WHERE type='table';");
@@ -47,5 +48,6 @@ public class SqlExecutioner {
 			e.printStackTrace();
 		}
 	}
+	*/
 	
 }
