@@ -48,7 +48,7 @@ public class XMLWrapper extends IWrapper{
 	public String executeQuery(String table, String query, List<String> projections, List<String> selections) {
 		String queryToExecute = "<res>\n" +
 				       "{for $o in doc(\"sourcesXML/" + tablesMap.get(table) + "\")" + query + "\n" +
-				       "return <row>{$o/*}</row>\n"
+				       "return $o\n"
 				       + "}</res>"; 
 		System.out.println(queryToExecute);
 		String res = null;
@@ -62,7 +62,7 @@ public class XMLWrapper extends IWrapper{
 	}
 	
 	
-	public static void mainTest(String[] args){
+	public static void maintest(String[] args){
 		try {
 			XMLWrapper wrap= new XMLWrapper("sourcesXML", "XML");
 			System.out.println(wrap.executeQuery("XMLencheres", "/encheres/ench_tuple", null, null));
