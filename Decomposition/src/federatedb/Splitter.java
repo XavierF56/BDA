@@ -112,6 +112,7 @@ public class Splitter {
 	public static void main(String[] args) throws IOException {
 		List<IWrapper> wrappers = new ArrayList<IWrapper>();
 		wrappers.add(new XMLWrapper("sourcesXML", "XML"));
+		wrappers.add(new SqlWrapper("sourcesSQL", "SQL"));
 		
 		RoutingTable table = new RoutingTable(wrappers);
 		

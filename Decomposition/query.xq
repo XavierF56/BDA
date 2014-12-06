@@ -1,9 +1,9 @@
 <auteurs>
 {
-	for $f in doc("XMLrefbib")/bib/livre/auteur
+	for $f in doc("fournisseur")//nom
 	return
 		<nom>
-			{$f/nom/text(), $f/prenom/text()}
+			{$f/text()}
 		</nom>	
 }
 </auteurs>

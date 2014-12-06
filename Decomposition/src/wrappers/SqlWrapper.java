@@ -1,9 +1,12 @@
 package wrappers;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import tools.SqlExecutioner;
 
 public class SqlWrapper extends IWrapper {
 	
@@ -23,7 +26,7 @@ public class SqlWrapper extends IWrapper {
 
 	@Override
 	public List<String> getTables() {
-		// TODO Auto-generated method stub
+		// executeQuery("fournisseur", "SELECT name FROM sqlite_master WHERE type='table';");
 		return null;
 	}
 
@@ -33,7 +36,15 @@ public class SqlWrapper extends IWrapper {
 		
 		String sqlQuery = translateQuery(relation, query);
 		
-		return sqlQuery;
+		
+		try {
+			return SqlExecutioner.executeQuery("sourcesSQL/fournisseur", sqlQuery);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	/**
