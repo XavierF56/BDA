@@ -1,20 +1,24 @@
 package federatedb;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import wrappers.*;
 
-import wrappers.IWrapper;
-
 /**
  * 
  * @author xfraboul
  */
 public class RoutingTable {
-	Map<String, IWrapper> routing;
-	Map<String, String> metaModel;
+	private Map<String, IWrapper> routing;
+	private Map<String, String> metaModel;
+	
+	private int counter;  
 
 	/**
 	 * RoutingTable constructor
@@ -24,6 +28,7 @@ public class RoutingTable {
 		routing = new HashMap<String, IWrapper>();
 		metaModel = new HashMap<String, String>();
 		
+		this.counter = 1;
 		
 		// Generate Routing Table
 		for (IWrapper wrapper: wrappers) {
@@ -46,10 +51,21 @@ public class RoutingTable {
 	 * @param projections
 	 * @param selections
 	 * @return
+	 * @throws IOException 
 	 */
-	public String query(String table, String query, List<String> projections, List<String> selections) {
-		IWrapper wrapper = routing.get(table);
-		return wrapper.executeQuery(table, query, projections, selections);
+	public String query(String table, String query, List<String> projections, List<String> selections) throws IOException {
+		IWrapper wrapper = routing.get(table); 
+		String fileName = "tmp" + counter++ +".xml";
+		
+		String result = wrapper.executeQuery(table, query, projections, selections);
+		
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileName)));
+		
+		writer.write(result);
+		
+		writer.close();
+		
+		return fileName;
 	}
 	
 	/**
