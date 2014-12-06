@@ -22,6 +22,5 @@ public interface IWrapper {
 	 * @param selections
 	 * @return XML
 	 */
-	String executeQuery(String relation, String query, List<String> projections,
-			List<String> selections);
+	String executeQuery(String relation, String query, List<String> projections, List<String> selections);
 }
