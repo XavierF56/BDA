@@ -6,6 +6,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SqlWrapper extends IWrapper {
+	
+	String id;
+	String databasePath;
+	
+	public SqlWrapper(String databasePath, String id) {
+		this.id = id;
+		this.databasePath = databasePath;
+	}
 
 	@Override
 	public String getModel(String table) {
@@ -22,7 +30,10 @@ public class SqlWrapper extends IWrapper {
 	@Override
 	public String executeQuery(String relation, String query, List<String> projections,
 			List<String> selections) {
-		return translateQuery(relation, query);
+		
+		String sqlQuery = translateQuery(relation, query);
+		
+		return sqlQuery;
 	}
 
 	/**

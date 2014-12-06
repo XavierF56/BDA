@@ -1,6 +1,9 @@
 package federatedb;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import wrappers.*;
 
 import javax.xml.xquery.XQException;
 
@@ -65,7 +70,7 @@ public class Splitter {
 	/**
 	 * 
 	 */
-	public void run() {
+	public void run() throws IOException {
 		List<String[]> subqueries = new ArrayList<String[]>(); 
 		
 		Pattern p = Pattern.compile("doc\\(\"([\\w\\.\\-]+)\"\\)(\\/[^\\[\\]\\s]*(\\s*\\[[^\\[\\]]+\\])?(\\s*\\[[^\\[\\]]+\\])?)*");
@@ -83,26 +88,43 @@ public class Splitter {
 			subqueries.add(tmp);
 		}
 		
-		Map<String, String> newSubqueries = new HashMap<String, String>();
-		
 		for (String[] subquery : subqueries) {
 			StringBuilder newSubquery = new StringBuilder().append("doc(\"")
 					.append(this.table.query(subquery[1], subquery[2], new ArrayList<String>(), new ArrayList<String>()))
-					.append("\")/res/row");
-			newSubqueries.put(subquery[0], newSubquery.toString());
+					.append("\")/res/*");
+			
+			System.out.println("Old: " + subquery[0]);
+			System.out.println("New: " + newSubquery.toString());
+			String tmp = subquery[0];
+			tmp = tmp.replaceAll("\\(", "\\\\\\\\(");
+			tmp = tmp.replaceAll("\\)", "\\\\\\\\)");
+			System.out.println("Tmp: " + tmp);
+			this.query.replace(tmp, newSubquery.toString());
 		}
 		
-		for (String subquery : newSubqueries.keySet()) {
-			this.query.replaceAll(subquery, newSubqueries.get(subquery));
-
-		}
+		System.out.println("Full query: " + this.query);
 		
 		try {
-			XQueryExecutioner.executeQuery(this.query);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("result.xml")));
+			
+			writer.write(XQueryExecutioner.executeQuery(this.query));
+			
+			writer.close();
 		} catch (XQException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		List<IWrapper> wrappers = new ArrayList<IWrapper>();
+		wrappers.add(new XMLWrapper("sourcesXML", "XML"));
+		
+		RoutingTable table = new RoutingTable(wrappers);
+		
+		Splitter splitter = new Splitter("query.xq", table);
+		
+		splitter.run();
 	}
 }
 

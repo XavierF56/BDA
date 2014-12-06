@@ -53,7 +53,6 @@ public class XMLWrapper extends IWrapper{
 				       "{for $o in doc(\"sourcesXML/" + tablesMap.get(table) + "\")" + query + "\n" +
 				       "return $o\n"
 				       + "}</res>"; 
-		System.out.println(queryToExecute);
 		String res = null;
 		
 		try {

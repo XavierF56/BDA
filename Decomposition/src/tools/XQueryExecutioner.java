@@ -20,7 +20,6 @@ public class XQueryExecutioner {
         XQSequence seq = expr.executeQuery();	
 		
         String result = seq.getSequenceAsString(null);
-        System.out.println(result);
         
 		seq.close();
         expr.close();
