@@ -1,14 +1,11 @@
 package wrappers;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.w3c.dom.Document;
 
 public class XMLWrapper extends IWrapper{	
 	Map<String, String> tablesMap;
@@ -17,7 +14,7 @@ public class XMLWrapper extends IWrapper{
 	String sourceFolder;
 	
 	public XMLWrapper(String sourceFolder, String id) {
-		sourceFolder = sourceFolder;
+		this.sourceFolder = sourceFolder;
 		tablesMap = new HashMap<String, String>(); 
 		tables = new ArrayList<String>();
 		
@@ -36,10 +33,7 @@ public class XMLWrapper extends IWrapper{
 
 	
 	public String getModel(String table) {
-		//InputStream xml = new FileInputStream(sourceFolder + "/" + tablesMap.get(table));
-		
-		//Document document = documentBuilder.parse(xml);
-		//String systemId = document.getDoctype().getSystemId();
+
 		return null;
 	}	
 
