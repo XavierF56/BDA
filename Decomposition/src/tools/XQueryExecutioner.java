@@ -1,6 +1,7 @@
 package tools;
 
 import java.io.InputStream;
+
 import javax.xml.xquery.*;
 
 import com.saxonica.xqj.SaxonXQDataSource;
@@ -19,7 +20,7 @@ public class XQueryExecutioner {
         XQSequence seq = expr.executeQuery();	
 		
         String result = seq.getSequenceAsString(null);
-        
+        System.out.println(result);
         
 		seq.close();
         expr.close();

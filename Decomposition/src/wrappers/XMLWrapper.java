@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.xquery.XQException;
+
+import tools.*;
+
 
 public class XMLWrapper extends IWrapper{	
 	Map<String, String> tablesMap;
@@ -43,23 +47,29 @@ public class XMLWrapper extends IWrapper{
 
 	public String executeQuery(String table, String query, List<String> projections, List<String> selections) {
 		String queryToExecute = "<res>\n" +
-				       "for $o in doc(\"" + tablesMap.get(table) + "\")" + query + "\n" +
-				       "return <row>{$o}</row>\n"
-				       + "</res>"; 
+				       "{for $o in doc(\"sourcesXML/" + tablesMap.get(table) + "\")" + query + "\n" +
+				       "return <row>{$o/*}</row>\n"
+				       + "}</res>"; 
 		System.out.println(queryToExecute);
-		return null;
+		String res = null;
+		try {
+			res = XQueryExecutioner.executeQuery(queryToExecute);
+		} catch (XQException e) {
+			e.printStackTrace();
+		}
+		
+		return res;
 	}
 	
-	/*
-	public static void main (String[] args){
+	
+	public static void mainTest(String[] args){
 		try {
-			
 			XMLWrapper wrap= new XMLWrapper("sourcesXML", "XML");
-			wrap.executeQuery("XMLencheres", "/encheres/ench_tuple", null, null);
+			System.out.println(wrap.executeQuery("XMLencheres", "/encheres/ench_tuple", null, null));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	*/
+	
 }
