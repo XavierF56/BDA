@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.xquery.XQException;
+
+import tools.XQueryExecutioner;
+
 /**
  * 
  * @author btravers
@@ -93,6 +97,12 @@ public class Splitter {
 
 		}
 		
+		try {
+			XQueryExecutioner.executeQuery(this.query);
+		} catch (XQException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
 
