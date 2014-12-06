@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.xquery.XQException;
+
+import tools.XQueryExecutioner;
+
 /**
  * 
  * @author btravers
@@ -70,8 +74,11 @@ public class Splitter {
 		
 		while (m.find()) {
 			String[] tmp = new String[3];
+			// The full subquery
 			tmp[0] = m.group(0);
+			// The document name
 			tmp[1] = m.group(1);
+			// The XPath query
 			tmp[2] = m.group(2);
 			subqueries.add(tmp);
 		}
@@ -90,6 +97,12 @@ public class Splitter {
 
 		}
 		
+		try {
+			XQueryExecutioner.executeQuery(this.query);
+		} catch (XQException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
 
