@@ -1,8 +1,13 @@
 package federatedb;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * @author xfraboul
+ */
 public class RoutingTable {
 	Map<String, IWrapper> routing;
 	Map<String, String> metaModel;
@@ -12,6 +17,10 @@ public class RoutingTable {
 	 * @param wrappers
 	 */
 	public RoutingTable(List<IWrapper> wrappers) {
+		routing = new HashMap<String, IWrapper>();
+		metaModel = new HashMap<String, String>();
+		
+		
 		// Generate Routing Table
 		for (IWrapper wrapper: wrappers) {
 			List<String> tables = wrapper.getTables();

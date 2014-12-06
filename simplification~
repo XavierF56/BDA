@@ -3,3 +3,12 @@ Pas de commentaires
 pas de caractères spéciaux dans les noms de bases a-z A-Z - .
 
 for sur une ligne
+
+double quote and no simple quote
+
+for $f in doc
+	for $d in doc//[nom = $f/nom]
+	==> comportement interdit, remplacé par :
+	for $f in doc
+		for $d in doc//
+		where $d/nom = $f/nom

@@ -60,7 +60,7 @@ public class Splitter {
 		
 	}
 	
-	public static void main (String[] args){
+	public static void main2 (String[] args){
 		try {
 			Splitter sp = new Splitter("query.xq");
 			System.out.println(sp.getQuery());
