@@ -1,9 +1,6 @@
 package tools;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-
 import javax.xml.xquery.*;
 
 import com.saxonica.xqj.SaxonXQDataSource;
@@ -13,7 +10,7 @@ import com.saxonica.xqj.SaxonXQDataSource;
 public class XQueryExecutioner {
 	
 	
-	public String executeQuery(String query) throws XQException {		
+	public static String executeQuery(String query) throws XQException {		
 		XQDataSource ds = new SaxonXQDataSource();
         XQConnection con = ds.getConnection();
         
@@ -31,7 +28,7 @@ public class XQueryExecutioner {
 		return result;
 	}
 	
-	public String executeQuery(InputStream file) throws XQException {		
+	public static String executeQuery(InputStream file) throws XQException {		
 		XQDataSource ds = new SaxonXQDataSource();
         XQConnection con = ds.getConnection();
         
