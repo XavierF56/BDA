@@ -87,8 +87,8 @@ public class Splitter {
 		
 		for (String subquery : newSubqueries.keySet()) {
 			this.query.replaceAll(subquery, newSubqueries.get(subquery));
+
 		}
-		
 		
 	}
 }
