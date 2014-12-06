@@ -1,5 +1,0 @@
-package federatedb;
-
-public class RoutingTable {
-	Map<String, IWrapper> tables =
-}
