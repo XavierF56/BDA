@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<alcools>
+	<alcool nom="Cidre breton" categorie="Festif">
+		<fournisseur>Pascal</fournisseur>
+		<annee>2014</annee>
+		<prix>5</prix>
+		<description>Comme le normand, mais buvable.</description>
+	</alcool>
+	<alcool nom="Chateauneuf" categorie="KiTache">
+		<fournisseur>Bornibus</fournisseur>
+		<annee>1998</annee>
+		<prix>1337</prix>
+		<description>Les vrais savent.</description>
+	</alcool>
+	<alcool nom="Muscat de Rivesaltes" categorie="Apérooo">
+		<fournisseur>Bornibus</fournisseur>
+		<annee>2006</annee>
+		<prix>11</prix>
+		<description>Avec un bon melon.</description>
+	</alcool>
+	<alcool nom="Villageoise" categorie="KiTache">
+		<fournisseur>LeFoy</fournisseur>
+		<annee>2012</annee>
+		<prix>1</prix>
+		<description>Les vrais de vrais savent.</description>
+	</alcool>
+	<alcool nom="Kro" categorie="Apérooo">
+		<fournisseur>LeFoy</fournisseur>
+		<annee>2014</annee>
+		<prix>1</prix>
+		<description>Bière de chantier.</description>
+	</alcool>
+	<alcool nom="Champomy" categorie="Festif">
+		<fournisseur>HeMan</fournisseur>
+		<annee>2000</annee>
+		<prix>4</prix>
+		<description>HEYYEYAAEYAAAEYAEYAA !</description>
+	</alcool>
+</alcools>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<livre>
+   <auteur>
+      <nom>Stevens</nom>
+      <prenom>W.</prenom>
+   </auteur>
+</livre>
+<livre>
+   <auteur>
+      <nom>Stevens</nom>
+      <prenom>W.</prenom>
+   </auteur>
+   <auteur>
+      <nom>Stevens</nom>
+      <prenom>W.</prenom>
+   </auteur>
+</livre>
+<livre>
+   <auteur>
+      <nom>Abiteboul</nom>
+      <prenom>Serge</prenom>
+   </auteur>
+   <auteur>
+      <nom>Buneman</nom>
+      <prenom>Peter</prenom>
+   </auteur>
+   <et_al/>
+</livre>
+<livre/>
