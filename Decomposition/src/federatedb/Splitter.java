@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import wrappers.*;
+
 import javax.xml.xquery.XQException;
 
 import tools.XQueryExecutioner;
@@ -103,6 +105,17 @@ public class Splitter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		List<IWrapper> wrappers = new ArrayList<IWrapper>();
+		wrappers.add(new XMLWrapper("sourcesXML", "XML"));
+		
+		RoutingTable table = new RoutingTable(wrappers);
+		
+		Splitter splitter = new Splitter("query.xq", table);
+		
+		splitter.run();
 	}
 }
 
