@@ -56,7 +56,7 @@ public class XMLWrapper extends IWrapper{
 		String res = null;
 		
 		try {
-			XQueryExecutioner.executeQuery(queryToExecute);
+			res = XQueryExecutioner.executeQuery(queryToExecute);
 		} catch (XQException e) {
 			e.printStackTrace();
 		}
@@ -65,11 +65,11 @@ public class XMLWrapper extends IWrapper{
 	}
 	
 	
-	public static void main(String[] args){
+	public static void maintest(String[] args){
 		try {
 			XMLWrapper wrap= new XMLWrapper("sourcesXML", "XML");
 			System.out.println(wrap.executeQuery("XMLencheres", "/encheres/ench_tuple", null, null));
-			//System.out.println(wrap.getModel("XMLencheres"));
+			System.out.println(wrap.getModel("XMLencheres"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
