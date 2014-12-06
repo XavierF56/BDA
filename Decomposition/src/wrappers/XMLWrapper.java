@@ -56,6 +56,7 @@ public class XMLWrapper extends IWrapper{
 		return null;
 	}
 	
+	/*
 	public static void main (String[] args){
 		try {
 			
@@ -66,4 +67,5 @@ public class XMLWrapper extends IWrapper{
 			e.printStackTrace();
 		}
 	}
+	*/
 }
