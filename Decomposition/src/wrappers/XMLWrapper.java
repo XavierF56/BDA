@@ -12,10 +12,10 @@ import tools.*;
 
 
 public class XMLWrapper extends IWrapper{	
-	Map<String, String> tablesMap;
-	List<String> tables;
-	String id;
-	String sourceFolder;
+	private Map<String, String> tablesMap;
+	private List<String> tables;
+	private String id;
+	private String sourceFolder;
 	
 	public XMLWrapper(String sourceFolder, String id) {
 		this.sourceFolder = sourceFolder;
@@ -37,8 +37,11 @@ public class XMLWrapper extends IWrapper{
 
 	
 	public String getModel(String table) {
-
-		return null;
+		DTDGenerator app = new DTDGenerator();
+		
+		app.run("sourcesXML/" + tablesMap.get(table));
+       
+		return app.printDTD();
 	}	
 
 	public List<String> getTables() {
@@ -52,8 +55,9 @@ public class XMLWrapper extends IWrapper{
 				       + "}</res>"; 
 		System.out.println(queryToExecute);
 		String res = null;
+		
 		try {
-			res = XQueryExecutioner.executeQuery(queryToExecute);
+			XQueryExecutioner.executeQuery(queryToExecute);
 		} catch (XQException e) {
 			e.printStackTrace();
 		}
@@ -62,10 +66,11 @@ public class XMLWrapper extends IWrapper{
 	}
 	
 	
-	public static void maintest(String[] args){
+	public static void main(String[] args){
 		try {
 			XMLWrapper wrap= new XMLWrapper("sourcesXML", "XML");
 			System.out.println(wrap.executeQuery("XMLencheres", "/encheres/ench_tuple", null, null));
+			//System.out.println(wrap.getModel("XMLencheres"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

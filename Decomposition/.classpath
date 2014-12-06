@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="RessourcesJAR/saxon9-xqj.jar"/>
 	<classpathentry kind="lib" path="RessourcesJAR/saxon9he.jar"/>
 	<classpathentry kind="lib" path="RessourcesJAR/xqjapi.jar"/>
+	<classpathentry kind="lib" path="RessourcesJAR/dtdgen.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
