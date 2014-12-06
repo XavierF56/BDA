@@ -1,19 +1,22 @@
 package federatedb;
 import java.util.List;
 
-public interface IWrapper {
+public abstract class IWrapper {
+	
+	static int QueryCounter;
+	static String DestinationFolder;
 	
 	/**
 	 * Fetch the model of the database.
 	 * @return DTD
 	 */
-	String getModel();
+	abstract String getModel(String table);
 	
 	/**
 	 * Fetch the names of the tables of the database.
 	 * @return
 	 */
-	List<String> getTables();
+	abstract List<String> getTables();
 	
 	/**
 	 * Execute a query. Returns the results as XML.
@@ -22,5 +25,5 @@ public interface IWrapper {
 	 * @param selections
 	 * @return XML
 	 */
-	String executeQuery(String relation, String query, List<String> projections, List<String> selections);
+	abstract String executeQuery(String relation, String query, List<String> projections, List<String> selections);
 }
