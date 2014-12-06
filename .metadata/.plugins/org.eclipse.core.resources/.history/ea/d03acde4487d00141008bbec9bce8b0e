@@ -1,0 +1,32 @@
+package federatedb;
+
+import java.io.FileNotFoundException;
+import java.util.List;
+
+public class WrapperXML extends IWrapper{
+	
+	public WrapperXML(String sourceFolder) {
+		
+	}
+	
+	String getModel(String table) {
+		return null;
+	}
+
+	List<String> getTables() {
+		return null;
+	}
+
+	String executeQuery(String relation, String query, List<String> projections, List<String> selections) {
+		return null;
+	}
+	
+	public static void main (String[] args){
+		try {
+			WrapperXML wrap= new WrapperXML("sourceXML");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
