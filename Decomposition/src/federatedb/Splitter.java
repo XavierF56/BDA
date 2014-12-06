@@ -64,7 +64,7 @@ public class Splitter {
 	public void run() {
 		List<String[]> subqueries = new ArrayList<String[]>(); 
 		
-		Pattern p = Pattern.compile("doc\\(\"([\\w\\.\\-]+)\"\\)(\\/[\\S]*)");
+		Pattern p = Pattern.compile("doc\\(\"([\\w\\.\\-]+)\"\\)(\\/[^\\[\\]\\s]*(\\s*\\[[^\\[\\]]+\\])?(\\s*\\[[^\\[\\]]+\\])?)*");
 		
 		Matcher m = p.matcher(this.query);
 		
