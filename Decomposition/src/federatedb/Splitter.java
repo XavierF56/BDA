@@ -93,16 +93,9 @@ public class Splitter {
 					.append(this.table.query(subquery[1], subquery[2], new ArrayList<String>(), new ArrayList<String>()))
 					.append("\")/res/*");
 			
-			System.out.println("Old: " + subquery[0]);
-			System.out.println("New: " + newSubquery.toString());
-			String tmp = subquery[0];
-			tmp = tmp.replaceAll("\\(", "\\\\\\\\(");
-			tmp = tmp.replaceAll("\\)", "\\\\\\\\)");
-			System.out.println("Tmp: " + tmp);
-			this.query.replace(tmp, newSubquery.toString());
+			this.query = this.query.replace(subquery[0], newSubquery.toString());
 		}
 		
-		System.out.println("Full query: " + this.query);
 		
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("result.xml")));
