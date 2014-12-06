@@ -3,10 +3,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SqlWrapper implements IWrapper {
+public class SqlWrapper extends IWrapper {
 
 	@Override
-	public String getModel() {
+	public String getModel(String table) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -100,7 +100,7 @@ public class SqlWrapper implements IWrapper {
 	private String buildSqlQuery(String relation, String projection, List<String> selections) {
 		StringBuilder sqlQueryBuilder = new StringBuilder();
 		
-		sqlQueryBuilder.append("SELECT ").append(projection);		
+		sqlQueryBuilder.append("SELECT ").append(projection);
 		sqlQueryBuilder.append(" FROM ").append(relation);
 		
 		if (selections != null && selections.size() > 0) {
