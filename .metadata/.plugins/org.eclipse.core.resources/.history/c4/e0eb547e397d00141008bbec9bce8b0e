@@ -1,0 +1,18 @@
+package federatedb;
+
+import java.util.List;
+import java.util.Map;
+
+public class RoutingTable {
+	Map<String, IWrapper> routing;
+	
+	public RoutingTable(List<IWrapper> wrappers) {
+		for (IWrapper wrapper: wrappers) {
+			List<String> tables = wrapper.getTables();
+			for (String table: tables) {
+				routing.put(table, wrapper);
+			}
+		}
+		
+	}
+}

@@ -1,0 +1,21 @@
+package federatedb;
+
+import java.util.List;
+
+public class WrapperXML extends IWrapper{
+	
+	
+	String getModel(String table) {
+		return null;
+	}
+
+	List<String> getTables() {
+		return null;
+	}
+
+	String executeQuery(String relation, String query,
+		List<String> projections, List<String> selections) {
+		return null;
+	}
+	
+}

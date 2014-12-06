@@ -1,0 +1,11 @@
+
+public class Splitter {
+	public Splitter () {
+		String query = "";
+	}
+	
+	public static void main (String[] args){
+		
+	}
+}
+
