@@ -87,6 +87,20 @@ public class DTDGenerator extends org.xml.sax.helpers.DefaultHandler {
             System.exit(2);
         }
     }
+    
+    public void runString(String str)  {
+        try {
+            InputSource is = new InputSource(str);
+            XMLReader parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+            parser.setContentHandler(this);
+            parser.parse(is);
+        } catch (Exception err) {
+            System.err.println("Failed while parsing source file");
+            System.err.println(err.getMessage());
+            err.printStackTrace();
+            System.exit(2);
+        }
+    }
         
 
     /**

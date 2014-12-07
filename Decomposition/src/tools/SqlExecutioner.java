@@ -10,6 +10,8 @@ import java.sql.Statement;
 public class SqlExecutioner {
 
 	public static String executeQuery(String path, String query) throws SQLException {
+		// TODO Virer l'exception
+		// TODO Trouver comment fournir un chemin pour la base de données
 		Connection connection = null;
 		Statement statement = null;
 		String xmlRes = null;
@@ -18,7 +20,7 @@ public class SqlExecutioner {
 			Class.forName("org.sqlite.JDBC");
 			connection = DriverManager.getConnection("jdbc:sqlite:" + path);
 			connection.setAutoCommit(false);
-			System.out.println("Connection successfull.");
+			//System.out.println("Connection successfull.");
 			
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
@@ -33,7 +35,7 @@ public class SqlExecutioner {
 			e.printStackTrace();
 		}
 
-		System.out.println(xmlRes);
+		//System.out.println(xmlRes);
 		return xmlRes;
 	}
 	
