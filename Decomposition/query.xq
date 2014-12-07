@@ -1,10 +1,15 @@
 <auteurs>
 {
-	for $f in doc("fournisseur")//nom
+	for $i in doc("fournisseur")//id
 	return
-		<nom>
-			{$f/text()}
-		</nom>	
+		
+		for $a in doc("XMLalcool")//alcool
+		where $a/fournisseur/text() = $i/text()
+		return
+			<alcool>
+				{$i, $a/text()}
+			</alcool>
+		
 }
 </auteurs>
 

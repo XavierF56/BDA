@@ -56,13 +56,10 @@ public class SqlWrapper implements IWrapper {
 		
 		
 		try {
-			return SqlExecutioner.executeQuery("sourcesSQL/fournisseur", sqlQuery);
+			return SqlExecutioner.executeQuery(databasePath, sqlQuery);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw(new WrapperQueryException(this, query));
 		}
-		
-		return null;
 	}
 
 	private List<String> queryTables() {
