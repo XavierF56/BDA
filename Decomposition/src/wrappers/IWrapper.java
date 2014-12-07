@@ -1,6 +1,8 @@
 package wrappers;
 import java.util.List;
 
+import exception.WrapperQueryException;
+
 public interface IWrapper {
 
 	/**
@@ -23,6 +25,9 @@ public interface IWrapper {
 	 * @param projections
 	 * @param selections
 	 * @return XML
+	 * @throws WrapperQueryException 
 	 */
-	public abstract String executeQuery(String relation, String query, List<String> projections, List<String> selections);
+	public abstract String executeQuery(String relation, String query, List<String> projections, List<String> selections) throws WrapperQueryException;
+	
+	public String getId();
 }

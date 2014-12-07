@@ -66,9 +66,10 @@ public class Splitter {
 	}
 	
 	/**
+	 * @throws Exception 
 	 * 
 	 */
-	public void run() throws IOException {
+	public void run() throws Exception {
 		List<String[]> subqueries = new ArrayList<String[]>(); 
 		
 		Pattern p = Pattern.compile("doc\\(\"([\\w\\.\\-]+)\"\\)(\\/[^\\[\\],\\s]*(\\s*\\[[^\\[\\]]+\\])?(\\s*\\[[^\\[\\]]+\\])?)*");
@@ -107,7 +108,7 @@ public class Splitter {
 		}
 	}
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		List<IWrapper> wrappers = new ArrayList<IWrapper>();
 		wrappers.add(new XMLWrapper("sourcesXML", "XML"));
 		wrappers.add(new SqlWrapper("fournisseur", "SQL"));

@@ -53,10 +53,11 @@ public class RoutingTable {
 	 * @return
 	 * @throws IOException 
 	 */
-	public String query(String table, String query, List<String> projections, List<String> selections) throws IOException {
+	public String query(String table, String query, List<String> projections, List<String> selections) throws Exception {
 		IWrapper wrapper = routing.get(table); 
+
 		String fileName = "tmp" + counter++ +".xml";
-		
+				
 		String result = wrapper.executeQuery(table, query, projections, selections);
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileName)));
