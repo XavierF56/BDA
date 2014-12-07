@@ -10,13 +10,22 @@ import javax.xml.xquery.XQException;
 
 import tools.*;
 
-
+/**
+ * XML Wrapper
+ * @author xfraboul
+ *
+ */
 public class XMLWrapper implements IWrapper{	
 	private Map<String, String> tablesMap;
 	private List<String> tables;
 	private String id;
 	private String sourceFolder;
 	
+	/**
+	 * Constructor of XMLWrapper
+	 * @param sourceFolder path to for the XML files
+	 * @param id string used to prefix the table name
+	 */
 	public XMLWrapper(String sourceFolder, String id) {
 		this.sourceFolder = sourceFolder;
 		tablesMap = new HashMap<String, String>(); 
@@ -35,7 +44,11 @@ public class XMLWrapper implements IWrapper{
 		}
 	}
 
-	
+	/**
+	 * Fetch the DTD of a table
+	 * @param table name of the table
+	 * @return dtd as a string
+	 */
 	public String getModel(String table) {
 		DTDGenerator app = new DTDGenerator();
 		
@@ -43,11 +56,23 @@ public class XMLWrapper implements IWrapper{
        
 		return app.printDTD();
 	}	
-
+	
+	/**
+	 * Fetch the name of the tables, each table are prefixed with the ID of the wrapper
+	 * @return
+	 */
 	public List<String> getTables() {
 		return tables;
 	}
-
+	
+	/**
+	 * Execute a query and return the XML
+	 * @param table
+	 * @param query
+	 * @param projections
+	 * @param selections
+	 * return xml as a stirng
+	 */
 	public String executeQuery(String table, String query, List<String> projections, List<String> selections) {
 		String queryToExecute = "<res>\n" +
 				       "{for $o in doc(\"sourcesXML/" + tablesMap.get(table) + "\")" + query + "\n" +
