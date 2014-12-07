@@ -13,7 +13,6 @@ import tools.*;
 /**
  * XML Wrapper
  * @author xfraboul
- *
  */
 public class XMLWrapper implements IWrapper{	
 	private Map<String, String> tablesMap;
@@ -45,20 +44,21 @@ public class XMLWrapper implements IWrapper{
 	}
 
 	/**
-	 * Fetch the DTD of a table
-	 * @param table name of the table
-	 * @return dtd as a string
+	 * Fetch the model of the database for a given table.
+	 * @param table
+	 * @return DTD
 	 */
 	public String getModel(String table) {
 		DTDGenerator app = new DTDGenerator();
 		
-		app.run("sourcesXML/" + tablesMap.get(table));
+		app.run(sourceFolder + "/" + tablesMap.get(table));
        
 		return app.printDTD();
 	}	
 	
 	/**
-	 * Fetch the name of the tables, each table are prefixed with the ID of the wrapper
+	 * Fetch the names of the tables of the database. 
+	 * Names are prefixed by the type of Database (e.g. "SQL" for an SQL database).
 	 * @return
 	 */
 	public List<String> getTables() {
@@ -75,7 +75,7 @@ public class XMLWrapper implements IWrapper{
 	 */
 	public String executeQuery(String table, String query, List<String> projections, List<String> selections) {
 		String queryToExecute = "<res>\n" +
-				       "{for $o in doc(\"sourcesXML/" + tablesMap.get(table) + "\")" + query + "\n" +
+				       "{for $o in doc(\"" + sourceFolder + "/" + tablesMap.get(table) + "\")" + query + "\n" +
 				       "return $o\n"
 				       + "}</res>"; 
 		String res = null;
