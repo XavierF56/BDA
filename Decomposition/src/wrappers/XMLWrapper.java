@@ -27,6 +27,7 @@ public class XMLWrapper implements IWrapper{
 	 */
 	public XMLWrapper(String sourceFolder, String id) {
 		this.sourceFolder = sourceFolder;
+		this.id = id;
 		tablesMap = new HashMap<String, String>(); 
 		tables = new ArrayList<String>();
 		
@@ -37,7 +38,7 @@ public class XMLWrapper implements IWrapper{
 		    if (file.isFile()) {
 		    	String fileNameEx = file.getName();
 		    	String fileName = fileNameEx.substring(0, fileNameEx.lastIndexOf('.'));
-		        tablesMap.put(id + fileName, fileNameEx);
+		        tablesMap.put(this.id + fileName, fileNameEx);
 		        tables.add(id + fileName);
 		    }
 		}
@@ -71,7 +72,7 @@ public class XMLWrapper implements IWrapper{
 	 * @param query
 	 * @param projections
 	 * @param selections
-	 * return xml as a stirng
+	 * return XML as a string
 	 */
 	public String executeQuery(String table, String query, List<String> projections, List<String> selections) {
 		String queryToExecute = "<res>\n" +
@@ -96,7 +97,6 @@ public class XMLWrapper implements IWrapper{
 			System.out.println(wrap.executeQuery("XMLencheres", "/encheres/ench_tuple", null, null));
 			System.out.println(wrap.getModel("XMLencheres"));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
