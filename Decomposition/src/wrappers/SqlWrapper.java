@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tools.DTDGenerator;
 import tools.SqlExecutioner;
 
 public class SqlWrapper extends IWrapper {
@@ -22,8 +23,21 @@ public class SqlWrapper extends IWrapper {
 
 	@Override
 	public String getModel(String table) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Stocker le résultat de la requete pour ne la faire qu'une fois
+		String query = "SELECT * FROM " + table + ";";
+		String xml = "";
+		try {
+			xml = SqlExecutioner.executeQuery(databasePath, query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		DTDGenerator app = new DTDGenerator();
+		
+		app.runString(xml);
+       
+		return app.printDTD();
 	}
 	
 	@Override
@@ -77,7 +91,7 @@ public class SqlWrapper extends IWrapper {
 	 * @return
 	 */
 	private String translateQuery(String relation, String queryString) {
-		System.out.println("\nTranslation of " + queryString);
+		//System.out.println("\nTranslation of " + queryString);
 		queryString = queryString.replaceAll(" ", "");
 		
 		String column = extractProjection(queryString);		
