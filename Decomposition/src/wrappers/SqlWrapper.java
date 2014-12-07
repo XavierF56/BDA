@@ -52,7 +52,9 @@ public class SqlWrapper implements IWrapper {
 		
 		
 		try {
-			return SqlExecutioner.executeQuery("sourcesSQL/fournisseur", sqlQuery);
+			String res = SqlExecutioner.executeQuery("sourcesSQL/fournisseur", sqlQuery);
+			System.out.println(res);
+			return res;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,7 +93,6 @@ public class SqlWrapper implements IWrapper {
 	 */
 	private String translateQuery(String relation, String queryString) {
 		//System.out.println("\nTranslation of " + queryString);
-		queryString = queryString.replaceAll(" ", "");
 		
 		String column = extractProjection(queryString);		
 		List<String> where = extractSelections(queryString);
@@ -138,14 +139,14 @@ public class SqlWrapper implements IWrapper {
 		List<String> selections = new ArrayList<String>();
 		
 		// /$1[$3=$]
-		Pattern pattern = Pattern.compile("/(.*?)\\[(\\s*(.*?)\\s*=.*?)\\]");
+		Pattern pattern = Pattern.compile("/([^/]*?)\\[((.*?)[<>=!]{1,2}.*?)\\]");
 		Matcher matcher = pattern.matcher(queryString);
 		while (matcher.find()) {			
 			String selection = matcher.group(2).replaceAll("./", "");
-			if (matcher.group(3).equalsIgnoreCase(".")) {
-				selection = selection.replaceFirst(".", matcher.group(1));
-			}
+			selection = selection.replaceAll("\\.", matcher.group(1));
+			
 			selections.add(selection);
+			System.out.println(selection);
 		}
 		
 		return selections;
