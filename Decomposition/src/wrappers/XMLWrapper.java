@@ -96,7 +96,7 @@ public class XMLWrapper implements IWrapper{
 	}
 	
 	
-	public static void main(String[] args){
+	public static void maintest(String[] args){
 		try {
 			XMLWrapper wrap= new XMLWrapper("sourcesXML", "XML");
 			System.out.println(wrap.executeQuery("XMLencheres", " for /encherebioefe", null, null));
