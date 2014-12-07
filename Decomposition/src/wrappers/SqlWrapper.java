@@ -26,8 +26,25 @@ public class SqlWrapper extends IWrapper {
 
 	@Override
 	public List<String> getTables() {
-		// executeQuery("fournisseur", "SELECT name FROM sqlite_master WHERE type='table';");
-		return null;
+		List<String> tablesList = new ArrayList<String>();
+		
+		String query = "SELECT name FROM sqlite_master WHERE type='table';";
+		String xmlTables = "";
+		try {
+			xmlTables = SqlExecutioner.executeQuery(databasePath, query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Pattern pattern = Pattern.compile("<name>(.*?)</name>");
+		Matcher matcher = pattern.matcher(xmlTables);
+		while (matcher.find()) {
+			String name = matcher.group(1).toLowerCase();
+			tablesList.add(name);
+		}
+		
+		return tablesList;
 	}
 
 	@Override
