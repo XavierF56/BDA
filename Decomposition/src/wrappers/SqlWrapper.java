@@ -10,12 +10,14 @@ import tools.SqlExecutioner;
 
 public class SqlWrapper extends IWrapper {
 	
-	String id;
-	String databasePath;
+	private String id;
+	private String databasePath;
+	private List<String> tables;
 	
 	public SqlWrapper(String databasePath, String id) {
 		this.id = id;
 		this.databasePath = databasePath;
+		this.tables = queryTables();
 	}
 
 	@Override
@@ -23,9 +25,30 @@ public class SqlWrapper extends IWrapper {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public List<String> getTables() {
+		return tables;
+	}
+
+	@Override
+	public String executeQuery(String relation, String query, List<String> projections,
+			List<String> selections) {
+		
+		String sqlQuery = translateQuery(relation, query);
+		
+		
+		try {
+			return SqlExecutioner.executeQuery("sourcesSQL/fournisseur", sqlQuery);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	private List<String> queryTables() {
 		List<String> tablesList = new ArrayList<String>();
 		
 		String query = "SELECT name FROM sqlite_master WHERE type='table';";
@@ -45,23 +68,6 @@ public class SqlWrapper extends IWrapper {
 		}
 		
 		return tablesList;
-	}
-
-	@Override
-	public String executeQuery(String relation, String query, List<String> projections,
-			List<String> selections) {
-		
-		String sqlQuery = translateQuery(relation, query);
-		
-		
-		try {
-			return SqlExecutioner.executeQuery("sourcesSQL/fournisseur", sqlQuery);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
 	}
 
 	/**
