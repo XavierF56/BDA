@@ -22,7 +22,7 @@ public class SqlWrapper implements IWrapper {
 	}
 
 	public String getModel(String table) {
-		// TODO Stocker le résultat de la requete pour ne la faire qu'une fois
+		// TODO Stocker le rï¿½sultat de la requete pour ne la faire qu'une fois
 		String query = "SELECT * FROM " + table + " LIMIT 2;";
 		String xml = "";
 		try {
@@ -52,7 +52,7 @@ public class SqlWrapper implements IWrapper {
 		
 		
 		try {
-			return SqlExecutioner.executeQuery("sourcesSQL/fournisseur", sqlQuery);
+			return SqlExecutioner.executeQuery(databasePath, sqlQuery);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

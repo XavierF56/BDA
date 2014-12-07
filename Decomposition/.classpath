@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="RessourcesJAR/saxon9he.jar"/>
 	<classpathentry kind="lib" path="RessourcesJAR/xqjapi.jar"/>
 	<classpathentry kind="lib" path="RessourcesJAR/dtdgen.jar"/>
+	<classpathentry kind="lib" path="RessourcesJAR/sqlite-jdbc-3.8.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
