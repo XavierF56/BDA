@@ -1,37 +1,37 @@
 <?xml version="1.0"?>
 <alcools>
-	<alcool nom="Cidre breton" categorie="Festif">
-		<fournisseur>Pascal</fournisseur>
+	<alcool id="1" nom="Cidre breton" categorie="Festif">
+		<fournisseur>2</fournisseur>
 		<annee>2014</annee>
 		<prix>5</prix>
 		<description>Comme le normand, mais buvable.</description>
 	</alcool>
-	<alcool nom="Chateauneuf" categorie="KiTache">
-		<fournisseur>Bornibus</fournisseur>
+	<alcool id="2" nom="Chateauneuf" categorie="KiTache">
+		<fournisseur>1</fournisseur>
 		<annee>1998</annee>
 		<prix>1337</prix>
 		<description>Les vrais savent.</description>
 	</alcool>
-	<alcool nom="Muscat de Rivesaltes" categorie="Apérooo">
-		<fournisseur>Bornibus</fournisseur>
+	<alcool id="3" nom="Muscat de Rivesaltes" categorie="Apérooo">
+		<fournisseur>1</fournisseur>
 		<annee>2006</annee>
 		<prix>11</prix>
 		<description>Avec un bon melon.</description>
 	</alcool>
-	<alcool nom="Villageoise" categorie="KiTache">
-		<fournisseur>LeFoy</fournisseur>
+	<alcool id="4" nom="Villageoise" categorie="KiTache">
+		<fournisseur>3</fournisseur>
 		<annee>2012</annee>
 		<prix>1</prix>
 		<description>Les vrais de vrais savent.</description>
 	</alcool>
-	<alcool nom="Kro" categorie="Apérooo">
-		<fournisseur>LeFoy</fournisseur>
+	<alcool id="5" nom="Kro" categorie="Apérooo">
+		<fournisseur>3</fournisseur>
 		<annee>2014</annee>
 		<prix>1</prix>
 		<description>Bière de chantier.</description>
 	</alcool>
-	<alcool nom="Champomy" categorie="Festif">
-		<fournisseur>HeMan</fournisseur>
+	<alcool id="6" nom="Champomy" categorie="Festif">
+		<fournisseur>4</fournisseur>
 		<annee>2000</annee>
 		<prix>4</prix>
 		<description>HEYYEYAAEYAAAEYAEYAA !</description>

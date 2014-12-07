@@ -6,6 +6,7 @@ import java.util.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
+import java.io.StringReader;
 
 import javax.xml.parsers.SAXParserFactory;
 
@@ -80,6 +81,20 @@ public class DTDGenerator extends org.xml.sax.helpers.DefaultHandler {
             parser.parse(is);
         } catch (java.io.FileNotFoundException nf) {
             System.err.println("File " + filename + " not found");
+        } catch (Exception err) {
+            System.err.println("Failed while parsing source file");
+            System.err.println(err.getMessage());
+            err.printStackTrace();
+            System.exit(2);
+        }
+    }
+    
+    public void runString(String str)  {
+        try {
+            InputSource is = new InputSource(new StringReader(str));
+            XMLReader parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+            parser.setContentHandler(this);
+            parser.parse(is);
         } catch (Exception err) {
             System.err.println("Failed while parsing source file");
             System.err.println(err.getMessage());
