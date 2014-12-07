@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import tools.DTDGenerator;
 import tools.SqlExecutioner;
 
-public class SqlWrapper extends IWrapper {
+public class SqlWrapper implements IWrapper {
 	
 	private String id;
 	private String databasePath;
@@ -21,7 +21,6 @@ public class SqlWrapper extends IWrapper {
 		this.tables = queryTables();
 	}
 
-	@Override
 	public String getModel(String table) {
 		// TODO Stocker le résultat de la requete pour ne la faire qu'une fois
 		String query = "SELECT * FROM " + table + ";";
@@ -40,12 +39,12 @@ public class SqlWrapper extends IWrapper {
 		return app.printDTD();
 	}
 	
-	@Override
+
 	public List<String> getTables() {
 		return tables;
 	}
 
-	@Override
+
 	public String executeQuery(String relation, String query, List<String> projections,
 			List<String> selections) {
 		
