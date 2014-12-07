@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.xml.xquery.XQException;
 
 import tools.*;
+import exception.*;
 
 /**
  * XML Wrapper
@@ -74,7 +75,7 @@ public class XMLWrapper implements IWrapper{
 	 * @param selections
 	 * return XML as a string
 	 */
-	public String executeQuery(String table, String query, List<String> projections, List<String> selections) {
+	public String executeQuery(String table, String query, List<String> projections, List<String> selections) throws WrapperQueryException{
 		String queryToExecute = "<res>\n" +
 				       "{for $o in doc(\"" + sourceFolder + "/" + tablesMap.get(table) + "\")" + query + "\n" +
 				       "return $o\n"
@@ -84,17 +85,21 @@ public class XMLWrapper implements IWrapper{
 		try {
 			res = XQueryExecutioner.executeQuery(queryToExecute);
 		} catch (XQException e) {
-			e.printStackTrace();
+			throw(new WrapperQueryException(this, query));
 		}
 		
 		return res;
 	}
 	
+	public String getId() {
+		return id;
+	}
 	
-	public static void maintest(String[] args){
+	
+	public static void main(String[] args){
 		try {
 			XMLWrapper wrap= new XMLWrapper("sourcesXML", "XML");
-			System.out.println(wrap.executeQuery("XMLencheres", "/encheres/ench_tuple", null, null));
+			System.out.println(wrap.executeQuery("XMLencheres", " for /encherebioefe", null, null));
 			System.out.println(wrap.getModel("XMLencheres"));
 		} catch (Exception e) {
 			e.printStackTrace();

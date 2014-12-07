@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import exception.WrapperQueryException;
 import tools.DTDGenerator;
 import tools.SqlExecutioner;
 
@@ -22,7 +23,7 @@ public class SqlWrapper implements IWrapper {
 	}
 
 	public String getModel(String table) {
-		// TODO Stocker le résultat de la requete pour ne la faire qu'une fois
+		// TODO Stocker le rï¿½sultat de la requete pour ne la faire qu'une fois
 		String query = "SELECT * FROM " + table + " LIMIT 2;";
 		String xml = "";
 		try {
@@ -43,10 +44,13 @@ public class SqlWrapper implements IWrapper {
 	public List<String> getTables() {
 		return tables;
 	}
+	
+	public String getId() {
+		return id;
+	}
 
 
-	public String executeQuery(String relation, String query, List<String> projections,
-			List<String> selections) {
+	public String executeQuery(String relation, String query, List<String> projections, List<String> selections) throws WrapperQueryException {
 		
 		String sqlQuery = translateQuery(relation, query);
 		
