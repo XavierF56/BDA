@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import tools.SqlExecutioner;
 
-public class SqlWrapper extends IWrapper {
+public class SqlWrapper implements IWrapper {
 	
 	private String id;
 	private String databasePath;
@@ -20,18 +20,17 @@ public class SqlWrapper extends IWrapper {
 		this.tables = queryTables();
 	}
 
-	@Override
 	public String getModel(String table) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	@Override
+
 	public List<String> getTables() {
 		return tables;
 	}
 
-	@Override
+
 	public String executeQuery(String relation, String query, List<String> projections,
 			List<String> selections) {
 		

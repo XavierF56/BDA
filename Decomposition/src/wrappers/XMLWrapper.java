@@ -11,7 +11,7 @@ import javax.xml.xquery.XQException;
 import tools.*;
 
 
-public class XMLWrapper extends IWrapper{	
+public class XMLWrapper implements IWrapper{	
 	private Map<String, String> tablesMap;
 	private List<String> tables;
 	private String id;

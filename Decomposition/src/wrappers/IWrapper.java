@@ -1,11 +1,8 @@
 package wrappers;
 import java.util.List;
 
-public abstract class IWrapper {
-	
-	static int QueryCounter = 0;
-	static String DestinationFolder = "temp/";
-	
+public interface IWrapper {
+
 	/**
 	 * Fetch the model of the database.
 	 * @return DTD
