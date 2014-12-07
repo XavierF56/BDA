@@ -6,6 +6,7 @@ import java.util.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
+import java.io.StringReader;
 
 import javax.xml.parsers.SAXParserFactory;
 
@@ -90,7 +91,7 @@ public class DTDGenerator extends org.xml.sax.helpers.DefaultHandler {
     
     public void runString(String str)  {
         try {
-            InputSource is = new InputSource(str);
+            InputSource is = new InputSource(new StringReader(str));
             XMLReader parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
             parser.setContentHandler(this);
             parser.parse(is);

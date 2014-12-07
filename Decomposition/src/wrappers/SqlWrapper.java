@@ -23,7 +23,7 @@ public class SqlWrapper implements IWrapper {
 
 	public String getModel(String table) {
 		// TODO Stocker le résultat de la requete pour ne la faire qu'une fois
-		String query = "SELECT * FROM " + table + ";";
+		String query = "SELECT * FROM " + table + " LIMIT 2;";
 		String xml = "";
 		try {
 			xml = SqlExecutioner.executeQuery(databasePath, query);

@@ -46,6 +46,7 @@ public class SqlExecutioner {
 	 */
 	private static String resultToXML(ResultSet rs) {
 		StringBuilder xmlBuilder = new StringBuilder();
+		xmlBuilder.append("<?xml version=\"1.0\"?>");
 		xmlBuilder.append("<res>");
 		ResultSetMetaData metadata;
 		try {
