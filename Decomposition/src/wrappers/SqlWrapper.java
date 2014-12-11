@@ -27,7 +27,6 @@ public class SqlWrapper implements IWrapper {
 	}
 
 	public String getModel(String table) {
-		System.out.println(table);
 		// TODO Stocker le r�sultat de la requete pour ne la faire qu'une fois
 		String query = "SELECT * FROM " + tablesMap.get(table) + " LIMIT 2;";
 		String xml = "";
@@ -152,7 +151,6 @@ public class SqlWrapper implements IWrapper {
 			selection = selection.replaceAll("\\.", matcher.group(1));
 			
 			selections.add(selection);
-			System.out.println(selection);
 		}
 		
 		return selections;

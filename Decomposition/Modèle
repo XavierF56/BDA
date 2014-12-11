@@ -63,10 +63,3 @@ XMLalcool
 <!ELEMENT prix ( #PCDATA ) >
 
 <!ELEMENT description ( #PCDATA ) >
-
-
-
-
-
-
-

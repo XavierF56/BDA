@@ -1,0 +1,632 @@
+\documentclass[a4paper,10pt]{article}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{geometry}
+
+\usepackage{listings}
+%%% basic
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{gensymb}
+\usepackage{enumitem}
+\usepackage{placeins}
+\usepackage{listings}
+\usepackage{minted}
+%%% clickable ref
+\usepackage{hyperref}
+\usepackage[all]{hypcap} %for going to the top of an image when a figure reference is clicked
+\hypersetup{ % to remove red border arround links
+colorlinks=false,
+pdfborder={0 0 0},
+}
+%%% paragraph indent
+\usepackage{parskip}
+\setlength\parindent{15pt} % sets indent to zero
+\setlength{\parskip}{1.6ex plus 0.5ex minus 0.3ex}
+%%% smart space (for macros)
+\usepackage{xspace}
+%%% macros
+\newcommand{\fref}[1]{Figure~\ref{#1}}
+\newcommand{\tref}[1]{Table~\ref{#1}}
+\newcommand{\sref}[1]{Section~\ref{#1}}
+\newcommand{\cref}[1]{Chapter~\ref{#1}}
+\newcommand{\eref}[1]{Equation~\ref{#1}}
+\newcommand{\insertfigure}[4]{
+\begin{figure}[ht!]
+\begin{center}
+\includegraphics[width=#1\textwidth]{#2}
+\caption{#3}
+\label{#4}
+\end{center}
+\end{figure}
+}
+
+%Enter your name, the portfolio problem number, and the draft number.
+\title{\hrule \bigskip Projet BDA SIM \\ Base de données fédérée \bigskip \hrule}
+\author{Raphaël Baron - Guillaume Biez - Xavier Fraboulet \\ Thomas François - Damien Le Guen - Benoit Travers}
+
+%Enter your name, the portfolio problem number, and the draft number.  This will be a heading on pages after the first page.
+\markright{projet BDA SIM}
+
+
+
+\begin{document}
+
+%% title	
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+%% blank page
+~~\\
+\thispagestyle{empty}
+\newpage
+
+%% table of contents
+\tableofcontents
+
+%%% new section
+\newpage
+\section{Introduction}
+Avec la croissance actuelle de la quantité et des sources de données - notamment avec la progression de l'Internet des objets - l'architecture des bases de données classiques possédant un unique serveur de données central, montre progressivement ses limites. Aujourd'hui les entreprises sont de plus en plus amenées à croiser entre elles ces différentes sources de données. Il serait intéressant de pouvoir y accéder sans avoir à se soucier de leur hétérogéneité. C'est dans ce but qu'a été défini le modèle de l'architecture fédérée.
+
+Notre présent rapport s'intéresse donc à la réalisation d'une base de données fédérée mettant l'accent sur une interface d'accès unique à des données de différentes sources. Notre philosophie ici est d'arriver à la réalisation d'une chaîne complète de transmission de requête, de l'émission de la requête à la réception de la réponse par le client. Le tout de manière simplifiée mais fonctionnelle de bout en bout.
+
+Après avoir observé l'état de l'art actuel, nous étudierons la solution développée pour ce projet, partie par partie. Enfin, la dernière section portera sur les tests effectués pour valider le fonctionnement de notre projet.
+
+
+
+
+
+%%% new section
+\newpage
+\section{Présentation}
+\subsection{Définition}
+Au sein d'une même entreprise, il n'est pas rare d'avoir à traiter différents types et formats de données. Y accéder indépendamment n'est pas un souci, mais dès lors qu'il est question de traiter et croiser ces sources hétérogènes, cela peut très vite virer au casse-tête. C'est pour répondre à ce type de problématique qu'a été défini le modèle d'architecture fédérée : communiquer de manière transparente avec chaque base tout en leur laissant leur autonomie. Au coeur de cette architecture, on trouve deux parties principales : 
+\begin{itemize}
+\item La première est le médiateur. Il joue le rôle d'interface que vient interroger l'utilisateur de la base à l'aide d'un seul et même langage. Il se charge ensuite de découper la requête et de l'envoyer aux bases concernées.
+\item La seconde partie est représentée par les wrappers. Pour chaque format de données, un wrapper doit être développé pour faire le lien en entrée et en sortie avec le médiateur et la base de données correspondante. Il convertit la requête et la réponse dans les langages adéquats.
+\end{itemize}
+
+\subsection{Les contraintes de l'architecture fédérée}
+Une base de données fédérée est donc une architecture visant à communiquer de manière transparente avec des sources hétérogènes et potentiellement distribuées sur plusieurs machines. Étrangement, bien que ce modèle d'architecture fédérée soit défini depuis le milieu des années 80, il n'existe toujours pas de solution universellement répandue, qu'elle soit open-source ou commerciale. Cela s'explique par plusieurs facteurs. 
+
+Tout d'abord, la contrainte d'accéder à des données hétérogènes ne permet pas de supposer \textit{à priori} des formats nécessaires à chaque utilisateur. Ainsi, si pour certains utilisateurs le support d'XML et de SQL sera amplement suffisant, d'autres réclameront le support de formats très divers, parfois non standardisés ou voire même spécifiquement conçu en interne par l'entreprise. Dans ce cas-là, l'utilisateur sera forcé d'écrire par lui-même un nouveau wrapper propre au format.
+
+De la même manière, le format principal de communication à la base fédérée n'est pas nécessairement taillé à tous les scénarios d'utilisation. Si la plupart du temps, la combinaison XQuery en entrée et XML en sortie convient aux applications web courantes, qu'advient-t'il en cas de non-compatibilité avec  ces formats ? Le plus souvent, toute la chaîne de routage de requêtes est alors à recoder.
+
+
+\subsection{Les modèles existants}
+On l'a vu, l'architecture fédérée ne se prête pas à une solution définitive fournie clés-en-mains. Pourtant, certains outils existent. Parmi eux, nous nous sommes penchés sur XML Mediator de e-XMLMedia et Liquid Data de BEA.
+
+\subsubsection{XML Mediator de e-XMLMedia}
+Comme son nom l'indique, cet outil permet la création d'un médiateur pour accéder et publier des données variées au format XML. Comme le montre la \fref{fig:xmlmediator} Il dispose de plusieurs wrappers intégrés ainsi que d'interfaces permettant de créer des wrappers personalisés.
+
+Il dispose de plusieurs fonctionnalités intéressantes, notamment le support de requêtes XQuery distribués et l'utilisation possible dans tout environnement de type SOAP. Il est de fait bien adapté à une implémentation pour services web.
+
+\insertfigure{1}{E-XML.png}{Architecture du médiateur e-XML}{fig:xmlmediator}
+
+\subsubsection{Liquid Data de BEA}
+Sorti au début des années 2000, ce système permet, par l'intermédiaire d'une interface utilisateur graphique (cf. \fref{fig:liquidata}), de définir les relations entre les données et les requêtes qui leurs seront adressées. Il permet également un accès répété aux bases en soumettant des requêtes paramétrées et de simplifier la récupération de résultats à partir d'une application web à l'aide de Liquid Data Control. Néanmoins, cette solution propriétaire vieillissante offre peu de souplesse pour intervenir dans d'autres cas d'utilisation que par accès web.
+
+\insertfigure{0.8}{LiquidData.png}{Création d'une requête paramétrée via l'interface}{fig:liquiddata}
+
+
+
+
+
+
+
+%%% new section
+~~\\
+\newpage
+\section{Solution}
+
+Le choix pour le langage de requête s'est porté sur XQuery et pour le format de retour sur XML. Ainsi, la base de données fédéree apparait comme une liste de fichiers XML aux yeux de l'utilisateur.
+
+
+La \fref{fig:archiglo} présente l'architecture de la solution. Ces différents modules vont être présentés et détaillés dans les sections suivantes.
+
+Par ailleurs, nous avons écrit deux wrappers afin de prendre en compte deux types de bases :
+\begin{itemize}
+\item base de données XML ;
+\item base de données relationnelles SQLite3.
+\end{itemize}
+
+
+\insertfigure{0.6}{Archi_Global.jpg}{Architecture globale de la solution}{fig:archiglo}
+
+
+
+
+
+
+\subsection{Médiateur}
+
+\subsubsection{Découpage de la requête}
+
+L'utilisateur soumet à la base de données fédérée une requête XQuery susceptible de porter sur plusieurs tables appartenant à différentes bases de données.
+Grâce à la classe "Splitter", la base de données fédérées est en mesure de découper la requète XQuery en de multiple sous-requêtes. 
+Pour des raisons de simplicité d'implémentation, les sous-requêtes que nous avons cherché à isoler sont les morceaux du XQuery ayant la forme suivante : \emph{doc("Table")XPath}.
+Ainsi, les sous-requêtes sont des requêtes de type XPath avec leur table associée. 
+
+Une fois le découpage effectué, les sous-requêtes sont envoyées aux wrappers associés aux bonnes bases de données grâce à la table de routage.
+Ce wrapper se chargera de transformer la requête XPath dans le bon langage.
+
+Nous allons illustrer le découpage d'une requête XQuery avec l'exemple de la \fref{lst:exempleRequete}. 
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <fournisseurs>
+  {
+      for $a in doc("XMLalcool")//alcool
+      where $a//annee = "2014"
+      return
+          for $f in doc("SQLfournisseur")/tuple
+          where $f/id = $a/fournisseur
+          return $f	
+  }
+  </fournisseurs>
+\end{minted}
+\caption{Exemple de requête XQuery}
+\label{lst:exempleRequete}
+\end{figure}
+
+En exécutant cette requête XQuery sur notre base de données fédérée, le "Splitter" capture les morceaux \emph{doc("XMLalcool")//alcool} et \emph{doc("SQLfournisseur")/tuple}.
+\'A partir de ces morceaux, le "Splitter" construit deux sous-requêtes XPath : "//alcool" pour la table "XMLalcool" et "/tuple" pour la table "XMLalcool".
+
+
+
+
+
+\subsubsection{Assemblage des sous résultats}
+
+Les résultats intermédiaires issus de l'exécution des sous-requêtes sont enregistrés dans des fichiers temporaires, à raison d'un fichier par sous-requête.
+Ces fichiers sont des documents XML respectant une structure précise dont la forme est explicitéé dans la \fref{lst:retourmediateur}.
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <res>
+	<!-- Resultat de la sous requete -->
+  </res>
+\end{minted}
+\caption{Format de résultat pour le médiateur}
+\label{lst:retourmediateur}
+\end{figure}
+
+Ainsi nous remplaçons dans la requête XQuery originale tous les morceaux de la forme \emph{doc("Table")XQuery} par \emph{doc("tmp")/res/*}, où "tmp" est le fichier temporaire correspondant au résultat de la sous-requête.
+La requête XQuery modifiée est éxécutée à l'aide de Saxon et le résulat est enregistré dans un fichier.
+
+Nous allons reprendre notre exemple précédent pour illustrer l'assemblage des sous-résultats.
+Dans la requête XQuery, le "Splitter" remplace \emph{doc("XMLalcool")//alcool} par \emph{doc("tmp1.xml")/res/*} et \emph{doc("SQLfournisseur")//tuple} par \emph{doc("tmp2.xml")/res/*}, où tmp1.xml et tmp2.xml sont les fichiers temporaires contenant les résultats intermédiaires.
+La requête XQuery modifiée est représentée \fref{lst:requeteModifiee}.
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+	<fournisseurs>
+	{
+		for $a in doc("tmp1.xml")/res/*
+		where $a//annee = "2014"
+		return
+			for $f in doc("tmp2.xml")/res/*
+			where $f/id = $a/fournisseur
+			return $f	
+	}
+	</fournisseurs>
+\end{minted}
+\caption{Requête XQuery modifiée}
+\label{lst:requeteModifiee}
+\end{figure}
+
+
+
+
+\subsubsection{Simplifications}
+
+Par souci de simplification, nous avons considéré que dans \emph{doc("Table")XQuery} le XQuery était nécessairement du XPath. Cette simplification était nécessaire afin d'exécuter séparément les requêtes. Par conséquent, les parties propres aux XQuery doivent être déplacées dans les clauses \emph{where} ou \emph{return} comme dans l'exemple de la \fref{lst:contraintes}.
+
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+	for $f in doc()
+		for $d in doc//[nom = $f/nom]
+    ==> comportement interdit
+    
+    
+	for $f in doc
+		for $d in doc//
+		where $d/nom = $f/nom
+	==> Comportement correcte
+\end{minted}
+\caption{Exemple de contrainte sur le XQuery}
+\label{lst:contraintes}
+\end{figure}
+
+
+
+\subsubsection{Pistes d'amélioration}
+
+Le découpage effectué ci-dissus est fonctionnel mais pourrait être plus optimisé. Un des moyens d'optimisation consiste à limiter davantage la quantité de données remontées par les sous requêtes.
+Pour ce faire, nous pourions prendre en considération les élements dans les clauses \emph{where}, \emph{return}, etc. 
+
+Par exemple, si on considère une table provenant d'une base SQL et la requête de la \fref{lst:optimisation}, nous pourrions informer le wrapper SQL que seul l'attribut \emph{nom} nous intéresse (\emph{where \$f.id = "13"}). Un fonctionnement similaire pourrait aussi être possible avec les données XML.
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+	for $f in doc("fournisseurs.xml")/fournisseurs/tuple
+    where $f.id = "13"
+    return $f/nom
+
+\caption{Exemple pour l'optimisation}
+\label{lst:optimisation}
+\end{figure}
+
+Comme autre piste d'amélioration, nous avons empêché le traitement simultané d'une sous requête dans deux bases de données diférentes.
+Par exemple, suposons que l'on ait une table fournisseur dans notre base de données SQL et un document fournisseur.xml dans notre base de données XML stockant les mêmes informations.
+Dans une base de données fédérée plus avancée, l'exécution d'une requête sur fournisseur devrait exécuter simultanément la requête sur la table SQL et sur le document XML.
+Dans notre implémentation, nous avons choisi de préfixer les tables par le nom de leur base de données afin de ne pas avoir de conflits sur les noms.
+Si l'utilisateur a besoin des information présente dans la table SQL et le document XML, il devra effectuer l'union manuellement.
+
+
+\subsection{Table de routage}
+%%%%%%%%%%%%%%%%%%%%% en correction par gui  %%%%%%%%%%%%%
+Le rôle de la table de routage est simple : elle achemine les requêtes XPath vers les bonnes bases. Pour ce faire, elle contient une table qui associe le nom des tables au wrappers. Cette table est construite au lancement de la base de données fédérée.
+
+
+
+\subsection{Wrappers}
+
+Les wrappers font office de connecteurs permettant à notre base de données fédérée d'intéragir avec les sources de données, qui sont ici nos bases XML et SQLite3. Suite au découpage de la requête et avec l'aide de la table de routage, les différentes sous-requêtes sont envoyées vers les bases correspondantes en XPath, et les wrappers font l'intermédiaire pour traduire les requêtes dans le langage correspondant. De même, les données renvoyées par les bases sont traduites du format de la base au XML par le wrapper. Ces données sont  ensuites assemblées par le médiateur.
+
+\insertfigure{0.55}{WrapperInterface.png}{API des wrappers.}{fig:wrapperInterface}
+
+La figure \ref{fig:wrapperInterface} présente l'API des wrappers qui doit être implémentée par les administrateurs des bases locales. Cette API permet d'avoir une interface de communication avec notre base fédérée, commune à tous les wrappers.
+\begin{itemize}
+\item La méthode \(getModel()\) est utilisée par la base fédérée pour construire le modèle général. Cette méthode doit renvoyer la DTD de la base locale. 
+\item La méthode \(getTables()\) est quand-à-elle utilisée pour construire la table de routage. Elle doit retourner la liste des tables de la base locale. 
+\item la méthode \(getId()\) fourni l'id de la base locale. 
+\item la méthode \(executeQuery()\) exécute une requête. La base fédérée lui fournit la sous-requête obtenue après exécution du Splitter, au format XPath, et la méthode renvoie le résultat au format XML.
+\end{itemize}
+
+
+\subsubsection{Wrapper XML}
+
+\insertfigure{1}{WrapperXML.png}{Implémentation du wrapper XML.}{fig:wrapperXML}
+
+Le wrapper XML est relativement simple puisqu'il se contente d'executer les requêtes XPath sur les documents XML. La seule contrainte réside dans le format de retour. En effet, le médiateur accepte un format de données de retour très précis (\fref{lst:retour}).
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <res>
+      <nom>Samantha</nom>
+      <nom>Daniel</nom>
+      <nom>Teal'c</nom>
+      <nom>Jack</nom>
+  </res>
+\end{minted}
+\caption{Format du résultat pour une requête affichant tous les noms d'un document XML}
+\label{lst:retour}
+\end{figure}
+
+Pour respecter le format de résultat demandé, nous avons utilisé une requête XQuery (\fref{lst:format}). Pour l'execution de cette dernière, la librairie JAVA SAXON a aussi été utilisée. 
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <res>
+  {for $o in doc("NOM_TABLE")REQUETE_XPATH
+      return $o
+  }
+  </res>
+\end{minted}
+\caption{Requête formattant le XML pour respecter le format du Médiateur}
+\label{lst:format}
+\end{figure}
+
+\subsubsection{Wrapper SQL}
+
+\insertfigure{1}{WrapperSQL.png}{Implémentation du wrapper SQL.}{fig:wrapperSQL}
+
+L'implémentation du wrapper SQL présentée dans la Figure \ref{fig:wrapperSQL} est plus compliquée que pour le wrapper XML. Contrairement à ce dernier, il n'est pas possible d'exécuter la requête sur la base locale directement. L'exécution requiert de transformer des requêtes XPath en requêtes SQL. Nous avons également choisi de ne pas inclure le nom de la table interrogée dans le XPath mais de la renseigner à côté. Pour effectuer la transformation des requêtes, nous avons créé deux méthodes, \(extractProjection\) et \(extractSelection\), respectivement pour récuperer les projections et les sélections.
+
+
+Dans les requêtes XPath, nous avons réduits les formes sous lesquelles les projections peuvent se présenter. Nous avons gardé les cas suivants :
+\begin{itemize}
+\item \emph{/tuple} ou \emph{//tuple} : Pour toutes les bases SQL, nous avons ajouté un noeud \(tuple\) qui représente une ligne. Ainsi les requêtes XPath précédentes reviennent à demander toutes les lignes de la table.
+\item \emph{/tuple/XXX} ou \emph{//XXX} : Les requêtes précédentes permettent d'effectuer une projection sur une des colonnes de la table \(XXX\).
+\end{itemize}
+Les cas présentés ci-dessus sont les seuls cas que nous avons considérés. Ainsi, il n'est pas possible de faire une projection sur plusieurs colonnes des tables SQL.
+
+
+Les sélections sur le XPath ont également été gérées de façon simplifiées. Nous avons choisi de récuperer le contenu des séléctions du XPath (entre crochets) mots pour mots, et de les placer dans la partie \(WHERE\) de la requête SQL. La seule modification apportée au contenu de la sélection a été le remplacement des \(.\) par le nom de la colonne correspondante. Ce cas est illustré dans l'exemple de la figure \ref{ex:XPathToSql}. Dans l'éventualité ou plusieurs sélections sont présentes dans la requête XPath, nous avons choisi de les concaténer simplement avec un \(AND\).
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{text}
+  Requête XPath sur la table Personnages :
+  /tuple[nom="Simba" or nom="Zazu"]/age[.<21]
+  
+  Requête SQL obtenue :
+  SELECT age FROM Personnages WHERE (nom="Simba" or nom="Zazu") AND (age<21);
+\end{minted}
+\caption{Exemple de transformation d'une requête XPath en requête SQL}
+\label{ex:XPathToSql}
+\end{figure}
+
+
+Le format de retour du wrapper SQL est globalement le même que celui du wrapper XML. La différence vient du format d'une base de données SQL, dans laquelle les données sont stockées en lignes. Nous avons donc ajouté le noeud \(tuple\) qui représente cette ligne. Dès qu'une requête fait une projection sur deux colonnes ou plus, ce noeud est ajouté au retour. La \fref{lst:retourTuple} montre un exemple de retour du wrapper SQL.
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <res>
+      <tuple>
+          <nom>Cendrillon</nom>
+          <emploi>Princesse</emploi>
+      </tuple>
+      <tuple>
+          <nom>Simba</nom>
+          <emploi>Roi Lion</emploi>
+      </tuple>
+  </res>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant les noms et emplois des individus d'un document}
+\label{lst:retourTuple}
+\end{figure}
+
+Pour obtenir un résultat de ce type, nous avons utilisé Java DataBase Connectivity (JDBC). Cet ensemble de classes permet, avec JAVA, de se connecter et intéragir avec des bases de données. Le wrapper, après avoir traduit la requête XPath en SQL, se connecte à la base de donnée concernée via le Driver JDBC correspondant au type de la base de données, soit un Driver SQLite dans notre cas.
+
+Nous appelons ensuite une méthode permettant de traduire le résultat renvoyé par la base en XML, et ce en respectant le format attendu par le médiateur et décrit à la \fref{lst:retourTuple}.
+
+\subsection{Modèle de la base fédérée}
+
+Pour faire des requêtes sur la base, l'utilisateur a besoin de connaître l'architecture de cette dernière. 
+Pour cela, une fonction permet d'accèder à la DTD des différents documents présents dans la base fédérée.
+La génération de la DTD ne constituant pas le coeur de notre application et étant sujet à de nombreux cas particuliers, nous avons préféré nous tourner vers une solution robuste et déjà testée.
+Nous avons ainsi choisi le module DTDGenerator reprise de la librairie Saxon. 
+Son utilisation est des plus directe puisqu'elle prend un document XML en entré et rédige la DTD résultante.
+
+La DTD définit la structure d'un document XML.
+Cependant toutes les données ne sont pas stockées dans le format XML.
+Dans le cas des tables SQL, nous exécutons une requête SQL sur la table de la forme \emph{SELECT * FROM MA_TABLE LIMIT 2}.
+Ensuite, nous transformons le résultat de la requête dans un format XML puis nous générons notre DTD sur le document XML.
+
+
+%%% new section
+\newpage
+\section{Tests}
+
+\subsection{Présentation de la base de tests}
+
+Notre jeu de tests se constitue de quatre bases, deux au format XML et deux au format SQL. Les deux bases XML sont contenues dans deux fichiers distincts, bar.xml et alcool.xml, tandis que les bases SQL ne constituent qu'un seul fichier, individu.sql.
+
+\begin{itemize}
+\item La première base XML, bar, contient des informations sur des bars (au sens débits de boissons). Pour chaque bar, on peut trouver son nom, son adresse, la liste des alcools qui y sont servis et la liste des clients qui le fréquentent.
+\item La seconde base XML, alcool, 
+\end{itemize}
+\subsection{Exemples}
+
+Afficher le nom de tous les bars qui se trouvent à Rennes.
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <barsRennes>
+  {
+      for $b in doc("XMLbar")//bar
+      where $b//ville = "Rennes"
+      return		
+          <bar>
+              {data($b//@nom)}
+          </bar>		
+  }
+  </barsRennes>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:requeteTest1}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <barsRennes>
+     <bar>Le Chat Noir</bar>
+     <bar>La Guinguette</bar>
+     <bar>La Taverne</bar>
+  </barsRennes>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:resultatTest1}
+\end{figure}
+
+
+Afficher le nom et l'adresse de tous les clients.
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <listeClients>
+  {
+      for $c in doc("SQLclient")/tuple
+      return		
+          <client>
+              {$c/nom, $c/adresse}
+          </client>		
+  }
+  </listeClients>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:requeteTest2}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <listeClients>
+     <client>
+        <nom>Benoit Travers</nom>
+        <adresse>13 rue du Morpion, Rennes</adresse>
+     </client>
+     <client>
+        <nom>Thomas Francois</nom>
+        <adresse>4 allée Sansfond, Marseille</adresse>
+     </client>
+     <client>
+        <nom>Xavier Fraboulet</nom>
+        <adresse>3 boulevard des Enfants Perdus, Dijon</adresse>
+     </client>
+     <client>
+        <nom>Raphael Baron</nom>
+        <adresse>17 rue des Lilas, Rennes</adresse>
+     </client>
+     <client>
+        <nom>Guillaume Biez</nom>
+        <adresse>5 sentier des Peupliers, Paris</adresse>
+     </client>
+     <client>
+        <nom>Damien Leguen</nom>
+        <adresse>5 chemin de la Clavicule, Montpellier</adresse>
+     </client>
+     <client>
+        <nom>Nicolas Cage</nom>
+        <adresse>26 avenue des Templiers, Strasbourg</adresse>
+     </client>
+     <client>
+        <nom>Jason Statham</nom>
+        <adresse>39 boulevard du Chat Noir, Paris</adresse>
+     </client>
+     <client>
+        <nom>Steven Seagal</nom>
+        <adresse>19 allée de la Rédemption, Rennes</adresse>
+     </client>
+     <client>
+        <nom>Bruce Willis</nom>
+        <adresse>23 sentier des Damnés, Rennes</adresse>
+     </client>
+  </listeClients>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:resultatTest2}
+\end{figure}
+
+
+Afficher le nom de tous les bars qui vendent de l'alcool produit en 2014.
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <barsAlcool2014>
+  {
+      for $r in distinct-values(
+          for $b in doc("XMLbar")//bar,
+              $a in doc("XMLalcool")//alcool
+          where $b/alcool = $a/@id
+          and $a//annee = "2014"
+          return 
+              $b/@nom )
+      return <bar>{$r}</bar>
+  }
+  </barsAlcool2014>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:requeteTest3}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <barsAlcool2014>
+     <bar>Le bar de la fin du monde</bar>
+     <bar>Chez Carlos</bar>
+     <bar>Le Chat Noir</bar>
+     <bar>La Guinguette</bar>
+     <bar>La Taverne</bar>
+  </barsAlcool2014>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:resultatTest3}
+\end{figure}
+
+
+
+Afficher tous les fournisseurs qui fournissent de l'alcool produit en 2014.
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <fournisseursAlcool2014>
+  {
+      for $a in doc("XMLalcool")//alcool
+      where $a//annee = "2014"
+      return
+          for $f in doc("SQLfournisseur")/tuple
+          where $f/id = $a/fournisseur
+          return $f	
+  }
+  </fournisseursAlcool2014>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:requeteTest4}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <fournisseursAlcool2014>
+     <tuple>
+        <id>2</id>
+        <nom>Pastistory</nom>
+        <adresse>5 avenue des Bateliers, Marseille</adresse>
+        <description>Le fabricant historique de Pastis.</description>
+     </tuple>
+     <tuple>
+        <id>3</id>
+        <nom>Le Foy</nom>
+        <adresse>20 avenue des Buttes de Coesmes, Rennes</adresse>
+        <description>Insa POWAAA</description>
+     </tuple>
+  </fournisseursAlcool2014>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:resultatTest4}
+\end{figure}
+
+
+Afficher le nombre de bars qui servent l'alcool préféré de Steven Seagal.
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <barsStevenSeagal>
+  {
+      for $c in doc("SQLclient")/tuple
+      where $c/nom = "Steven Seagal"
+      return count(
+          for $b in doc("XMLbar")//bar
+          where $b/alcool = $c/alcool_prefere
+          return $b
+          )
+  }
+  </barsStevenSeagal>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:requeteTest5}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{minted}[mathescape,linenos,numbersep=5pt,gobble=2,frame=lines,framesep=2mm]{xml}
+  <barsStevenSeagal>2</barsStevenSeagal>
+\end{minted}
+\caption{Exemple de résultat pour une requête affichant tous les noms d'un document}
+\label{lst:resultatTest5}
+\end{figure}
+
+
+%%% new section
+~~\\
+\newpage
+\section{Conclusion}
+Les tests ont donc pu montrer le bon fonctionnement général de notre solution, de l'envoi de la requête du client au format XQuery à la réponse en XML. L'accent a été mis sur la décomposition des requêtes, leur routage vers les bonnes sources de données, ainsi que l'uniformisation des wrappers XML et SQL. Cela nous à permis de comprendre l'organisation global d'une telle architecture en se focalisant sur l'essentiel, à savoir l'accès transparents de données hétérogènes.
+
+On peut remarquer que notre solution nous permettrait assez simplement d'étendre le système à de nouvelles sources de données distantes, notamment grâce au fait que l'utilisation de XQuery/XML en langage pivot est adapté à la conversion en d'autres formats.
+
+En piste d'amélioration, nous pourrions envisager de traiter des requêtes XQuery plus complexes, capables par exemple d'aller écrire sur des bases distantes. De plus pour constater sa robustesse en situation réelle, nous pourrions intégrer notre projet au sein d'une application web existante et/ou avec une base de tests plus complète.
+
+\end{document}
+
+
+
