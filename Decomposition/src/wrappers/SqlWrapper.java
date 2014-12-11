@@ -114,7 +114,7 @@ public class SqlWrapper implements IWrapper {
 	private String extractProjection(String queryString) {
 		String projection = "*";
 		
-		int rowIndex = queryString.indexOf("/row");
+		int rowIndex = queryString.indexOf("/tuple");
 		if (rowIndex >= 0) {
 			String sub = queryString.substring(rowIndex + 4).replaceAll("\\[.*?\\]", "");
 			
