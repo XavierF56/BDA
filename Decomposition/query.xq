@@ -1,6 +1,6 @@
 <auteurs>
 {
-	for $i in doc("fournisseur")//id
+	for $i in doc("SQLfournisseur")//id
 	return
 		
 		for $a in doc("XMLalcool")//alcool

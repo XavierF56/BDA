@@ -2,7 +2,9 @@ package wrappers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,16 +17,19 @@ public class SqlWrapper implements IWrapper {
 	private String id;
 	private String databasePath;
 	private List<String> tables;
+	private Map<String, String> tablesMap;
 	
 	public SqlWrapper(String databasePath, String id) {
 		this.id = id;
 		this.databasePath = databasePath;
+		
 		this.tables = queryTables();
 	}
 
 	public String getModel(String table) {
+		System.out.println(table);
 		// TODO Stocker le r�sultat de la requete pour ne la faire qu'une fois
-		String query = "SELECT * FROM " + table + " LIMIT 2;";
+		String query = "SELECT * FROM " + tablesMap.get(table) + " LIMIT 2;";
 		String xml = "";
 		try {
 			xml = SqlExecutioner.executeQuery(databasePath, query);
@@ -52,7 +57,7 @@ public class SqlWrapper implements IWrapper {
 
 	public String executeQuery(String relation, String query, List<String> projections, List<String> selections) throws WrapperQueryException {
 		
-		String sqlQuery = translateQuery(relation, query);
+		String sqlQuery = translateQuery(tablesMap.get(relation), query);
 		
 		
 		try {
@@ -64,6 +69,7 @@ public class SqlWrapper implements IWrapper {
 
 	private List<String> queryTables() {
 		List<String> tablesList = new ArrayList<String>();
+		tablesMap = new HashMap<String, String>();
 		
 		String query = "SELECT name FROM sqlite_master WHERE type='table';";
 		String xmlTables = "";
@@ -78,7 +84,8 @@ public class SqlWrapper implements IWrapper {
 		Matcher matcher = pattern.matcher(xmlTables);
 		while (matcher.find()) {
 			String name = matcher.group(1).toLowerCase();
-			tablesList.add(name);
+			tablesMap.put(this.id + name, name);
+			tablesList.add(id + name);
 		}
 		
 		return tablesList;

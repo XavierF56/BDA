@@ -1,0 +1,72 @@
+client
+<!ELEMENT res ( tuple+ ) >
+
+<!ELEMENT tuple ( id, nom, alcool_prefere, adresse ) >
+
+<!ELEMENT id ( #PCDATA ) >
+
+<!ELEMENT nom ( #PCDATA ) >
+
+<!ELEMENT alcool_prefere ( #PCDATA ) >
+
+<!ELEMENT adresse ( #PCDATA ) >
+
+
+fournisseur
+<!ELEMENT res ( tuple+ ) >
+
+<!ELEMENT tuple ( id, nom, adresse, description ) >
+
+<!ELEMENT id ( #PCDATA ) >
+
+<!ELEMENT nom ( #PCDATA ) >
+
+<!ELEMENT adresse ( #PCDATA ) >
+
+<!ELEMENT description ( #PCDATA ) >
+
+
+XMLbar
+<!ELEMENT bars ( bar+ ) >
+
+<!ELEMENT bar ( alcool+, adresse, client+ ) >
+<!ATTLIST bar id NMTOKEN #REQUIRED >
+<!ATTLIST bar nom CDATA #REQUIRED >
+
+<!ELEMENT alcool ( #PCDATA ) >
+
+<!ELEMENT adresse ( ville, rue, numero ) >
+
+<!ELEMENT ville ( #PCDATA ) >
+
+<!ELEMENT rue ( #PCDATA ) >
+
+<!ELEMENT numero ( #PCDATA ) >
+
+<!ELEMENT client ( #PCDATA ) >
+
+
+
+
+XMLalcool
+<!ELEMENT alcools ( alcool+ ) >
+
+<!ELEMENT alcool ( fournisseur, annee, prix, description ) >
+<!ATTLIST alcool categorie NMTOKEN #REQUIRED >
+<!ATTLIST alcool id NMTOKEN #REQUIRED >
+<!ATTLIST alcool nom CDATA #REQUIRED >
+
+<!ELEMENT fournisseur ( #PCDATA ) >
+
+<!ELEMENT annee ( #PCDATA ) >
+
+<!ELEMENT prix ( #PCDATA ) >
+
+<!ELEMENT description ( #PCDATA ) >
+
+
+
+
+
+
+

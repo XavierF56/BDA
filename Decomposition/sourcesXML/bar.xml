@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <bars>
 	<bar id="1" nom="Le bar de la fin du monde">
-		<alcool>3<alcool>
-		<alcool>5<alcool>
+		<alcool>3</alcool>
+		<alcool>5</alcool>
 		<adresse>
 			<ville>Paris</ville>
 			<rue>boulevard de la Victoire</rue>
@@ -23,7 +23,7 @@
 		<client>2</client>
 	</bar>
 	<bar id="3" nom="Le Chat Noir">
-		<alcool>5<alcool>
+		<alcool>5</alcool>
 		<adresse>
 			<ville>Rennes</ville>
 			<rue>boulevard Jean Jaures</rue>
@@ -34,10 +34,10 @@
 		<client>8</client>
 	</bar>
 	<bar id="4" nom="La Guinguette">
-		<alcool>1<alcool>
-		<alcool>4<alcool>
-		<alcool>5<alcool>
-		<alcool>6<alcool>	
+		<alcool>1</alcool>
+		<alcool>4</alcool>
+		<alcool>5</alcool>
+		<alcool>6</alcool>	
 		<adresse>
 			<ville>Rennes</ville>
 			<rue>rue de la Cathedrale</rue>
@@ -51,9 +51,9 @@
 		<client>10</client>
 	</bar>
 	<bar id="5" nom="La Taverne">
-		<alcool>1<alcool>
-		<alcool>5<alcool>
-		<alcool>6<alcool>		
+		<alcool>1</alcool>
+		<alcool>5</alcool>
+		<alcool>6</alcool>		
 		<adresse>
 			<ville>Rennes</ville>
 			<rue>avenue des Ecoliers</rue>
