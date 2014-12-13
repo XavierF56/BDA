@@ -592,9 +592,7 @@ public class DTDGenerator extends org.xml.sax.helpers.DefaultHandler {
     
     public static void maintest (String args[])
     {
-		
-
-                // Instantiate and run the application
+		// Instantiate and run the application
         DTDGenerator app = new DTDGenerator();
         
         app.run("sourcesXML/refbib.xml");

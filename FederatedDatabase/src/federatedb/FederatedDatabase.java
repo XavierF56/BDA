@@ -23,7 +23,7 @@ public class FederatedDatabase {
 	public static void main(String[] args) throws Exception {
 		List<IWrapper> wrappers = new ArrayList<IWrapper>();
 		wrappers.add(new XMLWrapper("sourcesXML", "XML"));
-		wrappers.add(new SqlWrapper("fournisseur", "SQL"));
+		wrappers.add(new SqlWrapper("sourcesSQL/fournisseur", "SQL"));
 		
 		FederatedDatabase fdb = new FederatedDatabase(wrappers);
 		

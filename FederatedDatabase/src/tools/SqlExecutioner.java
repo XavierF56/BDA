@@ -11,7 +11,7 @@ public class SqlExecutioner {
 
 	public static String executeQuery(String path, String query) throws SQLException {
 		// TODO Virer l'exception
-		// TODO Trouver comment fournir un chemin pour la base de données
+		// TODO Trouver comment fournir un chemin pour la base de donnï¿½es
 		Connection connection = null;
 		Statement statement = null;
 		String xmlRes = null;
