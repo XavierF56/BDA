@@ -26,6 +26,11 @@ public class Splitter {
 	private String query;
 	
 	/**
+	 * Output file
+	 */
+	private String output;
+	
+	/**
 	 * The routing table.
 	 */
 	private RoutingTable table;
@@ -36,8 +41,9 @@ public class Splitter {
 	 * @param table, The routing table.
 	 * @throws IOException
 	 */
-	public Splitter (String filename, RoutingTable table) throws IOException {
+	public Splitter (String filename, String output, RoutingTable table) throws IOException {
 		this.query = "";
+		this.output = output;
 		this.readFile(filename);
 		
 		// create temporary folder
@@ -105,7 +111,7 @@ public class Splitter {
 		
 		
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("result.xml")));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
 			
 			writer.write(XQueryExecutioner.executeQuery(this.query));
 			
