@@ -62,6 +62,7 @@ public class SqlWrapper implements IWrapper {
 		}
 			
 		String sqlQuery = translateQuery(tablesMap.get(relation), query);
+		System.out.println(sqlQuery);
 		
 		
 		try {
@@ -151,10 +152,10 @@ public class SqlWrapper implements IWrapper {
 		Pattern pattern = Pattern.compile("/([^/]*?)\\[((.*?)[<>=!]{1,2}.*?)\\]");
 		Matcher matcher = pattern.matcher(queryString);
 		while (matcher.find()) {			
-			String selection = matcher.group(2).replaceAll("./", "");
+			String selection = matcher.group(2).replaceAll("\\./", "");
 			selection = selection.replaceAll("\\.", matcher.group(1));
 			
-			selections.add(selection);
+			selections.add(selection.replaceAll("\\/text\\(\\)", ""));
 		}
 		
 		return selections;
