@@ -27,7 +27,7 @@ public class SqlWrapper implements IWrapper {
 	}
 
 	public String getModel(String table) {
-		// TODO Stocker le r�sultat de la requete pour ne la faire qu'une fois
+		// TODO Stocker le resultat de la requete pour ne la faire qu'une fois
 		String query = "SELECT * FROM " + tablesMap.get(table) + " LIMIT 2;";
 		String xml = "";
 		try {
@@ -115,8 +115,7 @@ public class SqlWrapper implements IWrapper {
 		
 		int rowIndex = queryString.indexOf("/tuple");
 		if (rowIndex >= 0) {
-			String sub = queryString.substring(rowIndex + 4).replaceAll("\\[.*?\\]", "");
-			
+			String sub = queryString.substring(rowIndex + 6).replaceAll("\\[.*?\\]", "");
 			if (sub.length() > 0) {
 				projection = sub.replaceAll("/", "");
 			}
