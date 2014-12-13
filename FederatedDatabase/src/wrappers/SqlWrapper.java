@@ -177,7 +177,7 @@ public class SqlWrapper implements IWrapper {
 			String prefix = " WHERE ";
 			
 			for (String selection : selections) {
-				sqlQueryBuilder.append(prefix).append(selection);
+				sqlQueryBuilder.append(prefix).append("(").append(selection).append(")");
 				prefix = " AND ";
 			}
 		}
