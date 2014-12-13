@@ -88,8 +88,10 @@ public class SqlWrapper implements IWrapper {
 		Matcher matcher = pattern.matcher(xmlTables);
 		while (matcher.find()) {
 			String name = matcher.group(1).toLowerCase();
-			tablesMap.put(this.id + name, name);
-			tablesList.add(id + name);
+			if(!name.equals("sqlite_sequence")) {
+				tablesMap.put(this.id + name, name);
+				tablesList.add(id + name);
+			}
 		}
 		
 		return tablesList;

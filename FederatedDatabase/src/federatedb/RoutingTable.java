@@ -16,7 +16,7 @@ import wrappers.*;
  */
 public class RoutingTable {
 	private Map<String, IWrapper> routing;
-	private Map<String, String> metaModel;
+	private Map<String, String> model;
 	
 	private int counter;  
 
@@ -26,7 +26,7 @@ public class RoutingTable {
 	 */
 	public RoutingTable(List<IWrapper> wrappers) {
 		routing = new HashMap<String, IWrapper>();
-		metaModel = new HashMap<String, String>();
+		model = new HashMap<String, String>();
 		
 		this.counter = 1;
 		
@@ -40,7 +40,7 @@ public class RoutingTable {
 		
 		// Generate MetaModel
 		for (String table: routing.keySet()) {
-			metaModel.put(table, routing.get(table).getModel(table));
+			model.put(table, routing.get(table).getModel(table));
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class RoutingTable {
 	 * 
 	 * @return MetaModel of the federated DataBase
 	 */
-	public Map<String, String> getMetaModel() {
-		return metaModel;
+	public Map<String, String> getModel() {
+		return model;
 	}
 }
