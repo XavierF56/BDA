@@ -41,6 +41,11 @@ public class Splitter {
 	public Splitter (String filename, RoutingTable table) throws IOException {
 		this.query = "";
 		this.readFile(filename);
+		
+		// create temporary folder
+		File dir = new File("tmp");
+		dir.mkdir();
+		
 		this.table = table;
 	}
 	
@@ -106,6 +111,16 @@ public class Splitter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// delete temporary folder
+		File index = new File("tmp");
+		String[]entries = index.list();
+		for(String s: entries){
+		    File currentFile = new File(index.getPath(),s);
+		    currentFile.delete();
+		}
+        index.delete();
+		
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -118,6 +133,7 @@ public class Splitter {
 		Splitter splitter = new Splitter("query.xq", table);
 		
 		splitter.run();
+		System.out.println("Terminated with success");
 	}
 }
 
