@@ -55,8 +55,15 @@ public class SqlWrapper implements IWrapper {
 
 
 	public String executeQuery(String relation, String query, List<String> projections, List<String> selections) throws WrapperQueryException {
-		
+		// remove res(root of xml) at the begining of the query
+		int indexRoot = query.indexOf("/res");
+		if (indexRoot < 2 && indexRoot >= 0) {
+			query = query.substring(indexRoot + 4);
+		}
+		System.out.println(query);
+			
 		String sqlQuery = translateQuery(tablesMap.get(relation), query);
+		
 		
 		
 		try {
