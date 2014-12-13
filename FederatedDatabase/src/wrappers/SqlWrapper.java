@@ -60,10 +60,8 @@ public class SqlWrapper implements IWrapper {
 		if (indexRoot < 2 && indexRoot >= 0) {
 			query = query.substring(indexRoot + 4);
 		}
-		System.out.println(query);
 			
 		String sqlQuery = translateQuery(tablesMap.get(relation), query);
-		
 		
 		
 		try {
