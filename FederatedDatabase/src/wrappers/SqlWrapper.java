@@ -62,7 +62,6 @@ public class SqlWrapper implements IWrapper {
 		}
 			
 		String sqlQuery = translateQuery(tablesMap.get(relation), query);
-		System.out.println(sqlQuery);
 		
 		
 		try {

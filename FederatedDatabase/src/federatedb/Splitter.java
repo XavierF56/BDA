@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import wrappers.*;
-
 import javax.xml.xquery.XQException;
 
 import tools.XQueryExecutioner;
@@ -125,20 +123,6 @@ public class Splitter {
 		    currentFile.delete();
 		}
         index.delete();
-		
-	}
-	
-	public static void main(String[] args) throws Exception {
-		List<IWrapper> wrappers = new ArrayList<IWrapper>();
-		wrappers.add(new XMLWrapper("sourcesXML", "XML"));
-		wrappers.add(new SqlWrapper("fournisseur", "SQL"));
-		
-		RoutingTable table = new RoutingTable(wrappers);
-		
-		Splitter splitter = new Splitter("query.xq", table);
-		
-		splitter.run();
-		System.out.println("Terminated with success");
 	}
 }
 
