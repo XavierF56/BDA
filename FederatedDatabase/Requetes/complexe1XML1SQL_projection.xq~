@@ -1,0 +1,9 @@
+<barsStevenSeagal>
+{
+	for $a in doc("XMLalcool")//alcool
+	where $a/prix < 5
+	return
+		for $c in doc("SQLclient")/res/tuple[alcool_prefere = $a/@id]
+		return $c
+}
+</barsStevenSeagal>
