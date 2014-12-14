@@ -1,9 +1,15 @@
 package exception;
-import wrappers.*;
 
 @SuppressWarnings("serial")
 public class WrapperQueryException extends Exception {
-	public WrapperQueryException (IWrapper wrapper, String query) {
-		super("In Wrapper" + wrapper.getId() + " with query [" + query +"]");
+	String msg;
+	
+	public WrapperQueryException (String msg) {
+		super(msg);
+		this.msg = msg;
+	}
+	
+	public String getMessage() {
+		return msg;
 	}
 }

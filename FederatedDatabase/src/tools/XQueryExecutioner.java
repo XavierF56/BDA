@@ -45,20 +45,4 @@ public class XQueryExecutioner {
         
 		return result;
 	}
-	
-	
-	/*
-	public static void main (String[] args) throws XQException, FileNotFoundException {
-		XQueryExecutioner xexec = new XQueryExecutioner();
-		
-        //String query = "<encheres> { for $o in doc(\"objets.xml\")/objets/obj_tuple/noobj let $e := doc(\"encheres.xml\")/encheres/ench_tuple[noobj/text() = $o/text()]/ench order by avg($e)	return if(count($e) > 2) then (	<article id=\"{$o/text()}\"> {avg($e)}</article>)else()}</encheres>";
-        
-		String query = "<test> { 1 + 1 } </test>";
-		
-        System.out.println(xexec.executeQuery(query));
-        System.out.println("\n\n");
-        //System.out.println(xexec.executeQuery(queryFromFile));
-    }
-	*/
-	
 }

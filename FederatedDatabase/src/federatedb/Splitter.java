@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 
 import javax.xml.xquery.XQException;
 
+import exception.WrapperQueryException;
+
 import tools.XQueryExecutioner;
 
 /**
@@ -79,6 +81,7 @@ public class Splitter {
 	 * 
 	 */
 	public void run() throws Exception {
+		String original = query;
 		List<String[]> subqueries = new ArrayList<String[]>(); 
 		
 		Pattern p = Pattern.compile("doc\\(\"([\\w\\.\\-]+)\"\\)(\\/[^\\[\\],\\s]*(\\s*\\[[^\\[\\]]+\\])?(\\s*\\[[^\\[\\]]+\\])?)*");
@@ -112,13 +115,11 @@ public class Splitter {
 		
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
-			
 			writer.write(XQueryExecutioner.executeQuery(this.query));
-			
 			writer.close();
 		} catch (XQException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw(new WrapperQueryException("Error in Main query \n" +
+					"original query: [" + original + "] \ntrnasformed query:[" + query + "]"));
 		}
 		
 		// delete temporary folder

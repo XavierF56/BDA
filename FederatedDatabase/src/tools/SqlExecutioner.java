@@ -16,24 +16,26 @@ public class SqlExecutioner {
 		Statement statement = null;
 		String xmlRes = null;
 		
+
 		try {
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:" + path);
-			connection.setAutoCommit(false);
-			//System.out.println("Connection successfull.");
-			
-			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery(query);
-			
-			xmlRes = resultToXML(rs);
-			
-			rs.close();
-			statement.close();
-			connection.close();
-			
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		connection = DriverManager.getConnection("jdbc:sqlite:" + path);
+		connection.setAutoCommit(false);
+		//System.out.println("Connection successfull.");
+		
+		statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(query);
+		
+		xmlRes = resultToXML(rs);
+		
+		rs.close();
+		statement.close();
+		connection.close();
+
 
 		//System.out.println(xmlRes);
 		return xmlRes;

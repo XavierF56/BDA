@@ -67,7 +67,7 @@ public class SqlWrapper implements IWrapper {
 		try {
 			return SqlExecutioner.executeQuery(databasePath, sqlQuery);
 		} catch (SQLException e) {
-			throw(new WrapperQueryException(this, query));
+			throw(new WrapperQueryException("Error in Wrapper " + getId() + " with query [" + query + "] : " + e.getMessage()));
 		}
 	}
 

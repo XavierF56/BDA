@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import exception.WrapperQueryException;
+
 import wrappers.*;
 
 /**
@@ -55,6 +57,10 @@ public class RoutingTable {
 	 */
 	public String query(String table, String query, List<String> projections, List<String> selections) throws Exception {
 		IWrapper wrapper = routing.get(table); 
+		
+		if (wrapper == null) {
+			throw(new WrapperQueryException("Error in Routing table: no such table [" + table + "]"));
+		}
 		
 		String fileName = "tmp/tmp" + counter++ +".xml";
 				

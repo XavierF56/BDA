@@ -85,7 +85,7 @@ public class XMLWrapper implements IWrapper{
 		try {
 			res = XQueryExecutioner.executeQuery(queryToExecute);
 		} catch (XQException e) {
-			throw(new WrapperQueryException(this, query));
+			throw(new WrapperQueryException("Error in Wrapper " + getId() + " with query [" + query + "]"));
 		}
 		
 		return res;

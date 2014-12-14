@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import exception.WrapperQueryException;
+
 import wrappers.IWrapper;
 import wrappers.SqlWrapper;
 import wrappers.XMLWrapper;
@@ -17,7 +19,12 @@ public class FederatedDatabase {
 	
 	public void query(String query, String output) throws Exception {
 		Splitter splitter = new Splitter(query, output, table);
-		splitter.run();
+		try {
+			splitter.run();
+			System.out.println("Terminated with success");
+		} catch(WrapperQueryException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	public void getModel() {
@@ -40,7 +47,6 @@ public class FederatedDatabase {
 		if (args.length == 0) {
 			fdb.query("query.xq", "result.xml");
 			//fdb.getModel();
-			System.out.println("Terminated with success");
 		} else {
 			if(args[0].equals("-q")) {
 				if (args.length == 1 || args.length > 3)
@@ -52,7 +58,6 @@ public class FederatedDatabase {
 					output = args[2];
 					
 				fdb.query(query, output);
-				System.out.println("Terminated with success");
 			} else if (args[0].equals("-m")) {
 				fdb.getModel();
 			} else if (args[0].equals("-h")) {
