@@ -1,0 +1,10 @@
+<barsRennes>
+   {
+      for $b in doc("XMLbar")//bar
+      where $b//ville = "Rennes"
+      return		
+         <bar>
+            {data($b//@nom)}
+         </bar>		
+   }
+   </barsRennes>

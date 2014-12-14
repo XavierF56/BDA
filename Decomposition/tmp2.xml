@@ -1,0 +1,67 @@
+<res>
+   <bar id="1" nom="Le bar de la fin du monde">
+		    <alcool>3</alcool>
+		    <alcool>5</alcool>
+		    <adresse>
+			      <ville>Paris</ville>
+			      <rue>boulevard de la Victoire</rue>
+			      <numero>13</numero>
+		    </adresse>
+		    <client>5</client>
+		    <client>8</client>	
+	  </bar>
+   <bar id="2" nom="Chez Carlos">
+		    <alcool>1</alcool>
+		    <alcool>2</alcool>
+		    <alcool>4</alcool>
+		    <adresse>
+			      <ville>Toulouse</ville>
+			      <rue>avenue du Papayou</rue>
+			      <numero>11</numero>
+		    </adresse>
+		    <client>2</client>
+	  </bar>
+   <bar id="3" nom="Le Chat Noir">
+		    <alcool>5</alcool>
+		    <adresse>
+			      <ville>Rennes</ville>
+			      <rue>boulevard Jean Jaures</rue>
+			      <numero>6</numero>
+		    </adresse>
+		    <client>1</client>
+		    <client>3</client>
+		    <client>8</client>
+	  </bar>
+   <bar id="4" nom="La Guinguette">
+		    <alcool>1</alcool>
+		    <alcool>4</alcool>
+		    <alcool>5</alcool>
+		    <alcool>6</alcool>	
+		    <adresse>
+			      <ville>Rennes</ville>
+			      <rue>rue de la Cathedrale</rue>
+			      <numero>21</numero>
+		    </adresse>
+		    <client>1</client>	
+		    <client>4</client>
+		    <client>6</client>
+		    <client>7</client>
+		    <client>9</client>
+		    <client>10</client>
+	  </bar>
+   <bar id="5" nom="La Taverne">
+		    <alcool>1</alcool>
+		    <alcool>5</alcool>
+		    <alcool>6</alcool>		
+		    <adresse>
+			      <ville>Rennes</ville>
+			      <rue>avenue des Ecoliers</rue>
+			      <numero>23</numero>
+		    </adresse>
+		    <client>2</client>
+		    <client>3</client>
+		    <client>6</client>
+		    <client>9</client>
+		    <client>10</client>	
+	  </bar>
+</res>
